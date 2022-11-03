@@ -9,13 +9,42 @@ namespace joostitemport.Items
 	{
         public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Joost Juice"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+			DisplayName.SetDefault("Joost Juice");
 			Tooltip.SetDefault("refweshing");
 		}
         public override void SetDefaults()
-        {
-            Item.potion = true;
-            Item.useTime = 17;
-        }
+		{
+			Item.maxStack = 999;
+			Item.consumable = true;
+			Item.width = 20;
+			Item.height = 26;
+			Item.useTime = 17;
+			Item.useAnimation = 17;
+            Item.useTurn = true;
+			Item.useStyle = 2;
+			Item.knockBack = 5;
+			Item.value = Item.sellPrice(1, 0, 0, 0);
+			Item.rare = 9;
+			Item.UseSound = SoundID.Item3;
+			Item.buffTime = 100000;
+			Item.buffType = ModContent.BuffType<Buffs.JoostJuice>();
+		}
+        public override void AddRecipes()
+		{
+			Recipe recipe = Recipe.Create(Item.type);
+			recipe.AddIngredient(ItemID.ChlorophyteOre); 
+			recipe.AddIngredient(ItemID.RegenerationPotion);
+			recipe.AddIngredient(ItemID.SwiftnessPotion);
+			recipe.AddIngredient(ItemID.IronskinPotion);
+			recipe.AddIngredient(ItemID.HeartreachPotion);
+			recipe.AddIngredient(ItemID.LifeforcePotion);
+			recipe.AddIngredient(ItemID.EndurancePotion);
+			recipe.AddIngredient(ItemID.RagePotion);
+			recipe.AddIngredient(ItemID.WrathPotion);
+			recipe.AddIngredient(ItemID.WarmthPotion);
+			recipe.AddIngredient(ItemID.SummoningPotion);
+			recipe.AddTile(TileID.Bottles);
+			recipe.Register();
+		}
     }
 }
