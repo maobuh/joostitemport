@@ -36,7 +36,7 @@ namespace joostitemport.Items
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Needle>();
 			Item.shootSpeed = 1000;
-			Item.useTurn
+			Item.useTurn = true;
 		}
 
 		public override void AddRecipes()
