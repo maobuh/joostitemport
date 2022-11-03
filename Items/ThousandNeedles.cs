@@ -9,12 +9,12 @@ using log4net.DateFormatter;
 
 namespace joostitemport.Items
 {
-	public class HundredNeedles : ModItem
+	public class ThousandNeedles : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("100 Needles"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault("so many needles....");
+			DisplayName.SetDefault("1000 Needles"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+			Tooltip.SetDefault("way too many needles... \n what to do with all these needles?");
 		}
 
 		public override void SetDefaults()
@@ -30,13 +30,12 @@ namespace joostitemport.Items
 			Item.useAnimation = 50;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 0;
-			Item.value = Item.sellPrice(0, 0, 1, 0);
+			Item.value = 10000;
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Needle>();
 			Item.shootSpeed = 1000;
-			Item.useTurn
 		}
 
 		public override void AddRecipes()
