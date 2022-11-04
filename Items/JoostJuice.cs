@@ -21,10 +21,10 @@ namespace joostitemport.Items
 			Item.useTime = 17;
 			Item.useAnimation = 17;
             Item.useTurn = true;
-			Item.useStyle = 2;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.knockBack = 5;
 			Item.value = Item.sellPrice(1, 0, 0, 0);
-			Item.rare = 9;
+			Item.rare = ItemRarityID.Cyan;
 			Item.UseSound = SoundID.Item3;
 			Item.buffTime = 100000;
 			Item.buffType = ModContent.BuffType<Buffs.JoostJuice>();
