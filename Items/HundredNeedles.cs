@@ -36,7 +36,7 @@ namespace joostitemport.Items
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Needle>();
 			Item.shootSpeed = 1000;
-			Item.useTurn
+			Item.useTurn = true;
 		}
 
 		public override void AddRecipes()
@@ -51,7 +51,7 @@ namespace joostitemport.Items
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// 15 degrees but in radians for the spread of the needles
-			float spread = 0.261799f;
+			const float spread = 0.261799f;
 			// makes 4 needles when shoot
 			for (int i = 0; i < 4; i++)
 			{

@@ -23,36 +23,37 @@ namespace joostitemport.Items
 			Item.noMelee = true;
 			Item.crit = -100;
 			Item.DamageType = DamageClass.Magic;
-			Item.mana = 10;
+			Item.mana = 60;
 			Item.width = 28;
 			Item.height = 30;
-			Item.useTime = 2;
-			Item.useAnimation = 50;
+			Item.useTime = 3;
+			Item.useAnimation = 60;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 0;
-			Item.value = 10000;
+			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Needle>();
 			Item.shootSpeed = 1000;
+			Item.useTurn = true;
 		}
 
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Cactus, 10);
-			recipe.AddIngredient(ItemID.Stinger);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ItemID.SpellTome);
+			recipe.AddIngredient(ModContent.ItemType<HundredNeedles>());
+			recipe.AddTile(TileID.Bookcases);
 			recipe.Register();
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// 15 degrees but in radians for the spread of the needles
-			float spread = 0.261799f;
+			const float spread = 0.1309f;
 			// makes 4 needles when shoot
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				// math for making random new angle
 				float baseSpeed = velocity.Length();
