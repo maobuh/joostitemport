@@ -9,7 +9,9 @@ namespace joostitemport.Buffs
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Refweshed");
-			Description.SetDefault("you feel refweshed");
+			Description.SetDefault("you feel refweshed\n" +
+			"Effects of Well fed, Regeneration, Swiftness, Ironskin, Heartreach,\n" +
+			"Lifeforce, Endurance, Rage, Wrath, Warmth, and Summoning");
 		}
 
 		public override void Update(Player player, ref int buffIndex)

@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using joostitemport.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using log4net.DateFormatter;
 
 namespace joostitemport.Items
 {

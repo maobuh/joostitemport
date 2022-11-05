@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using joostitemport.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using log4net.DateFormatter;
 
 namespace joostitemport.Items
 {
@@ -14,7 +13,8 @@ namespace joostitemport.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("1000 Needles"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
-			Tooltip.SetDefault("way too many needles... \n what to do with all these needles?");
+			Tooltip.SetDefault("way too many needles... \n" +
+			"what to do with all these needles?");
 		}
 
 		public override void SetDefaults()
