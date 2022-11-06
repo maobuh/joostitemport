@@ -6,6 +6,7 @@ using joostitemport.Projectiles;
 
 namespace joostitemport.Items
 {
+    [AutoloadEquip(EquipType.HandsOn)]
     public class BrawlersGlove : ModItem
     {
         public override void SetStaticDefaults()
@@ -19,7 +20,7 @@ namespace joostitemport.Items
 
         public override void SetDefaults()
         {
-            Item.damage = 100;
+            Item.damage = 1;
             Item.DamageType = DamageClass.Melee;
             Item.value = Item.sellPrice(0, 1, 0, 0);
             Item.rare = ItemRarityID.LightPurple;
@@ -28,8 +29,6 @@ namespace joostitemport.Items
 			Item.noUseGraphic = true;
             Item.useTime = 10;
             Item.useAnimation = 10;
-            Item.width = 24;
-            Item.height = 24;
             Item.knockBack = 0;
 			Item.autoReuse = true;
 			Item.useTurn = true;
