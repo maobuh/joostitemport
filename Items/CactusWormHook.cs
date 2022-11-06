@@ -28,8 +28,11 @@ namespace joostitemport.Items
         public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.Cactus, 100);
-			recipe.AddIngredient(ItemID.Stinger, 10);
+			recipe.AddIngredient(ItemID.Cactus, 1);
+			recipe.AddIngredient(ItemID.IvyWhip, 1);
+            recipe.AddIngredient(ItemID.TeleportationPotion, 1);
+            recipe.AddIngredient(ModContent.ItemType<JoostJuice>());
+            recipe.AddIngredient(ItemID.TempleKey, 1);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.Register();
 		}

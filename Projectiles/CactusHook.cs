@@ -25,7 +25,7 @@ namespace joostitemport.Projectiles
             Projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.light = 0.2f;
+            Projectile.light = 10f;
         }
         public override void SendExtraAI(BinaryWriter writer)
         {
