@@ -21,9 +21,8 @@ namespace joostitemport.Items
 		{
 			Item.damage = 1;
 			Item.noMelee = true;
-			Item.crit = -100;
 			Item.DamageType = DamageClass.Magic;
-			Item.mana = 60;
+			Item.mana = 40;
 			Item.width = 28;
 			Item.height = 30;
 			Item.useTime = 3;
@@ -31,7 +30,7 @@ namespace joostitemport.Items
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 0;
 			Item.value = Item.sellPrice(0, 1, 0, 0);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.LightRed;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Needle>();
@@ -51,7 +50,7 @@ namespace joostitemport.Items
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// 15 degrees but in radians for the spread of the needles
-			const float spread = 0.1309f;
+			const float spread = 0.261799f;
 			// makes 4 needles when shoot
 			for (int i = 0; i < 50; i++)
 			{
@@ -64,6 +63,11 @@ namespace joostitemport.Items
 				Projectile.NewProjectile(player.GetSource_OpenItem(ModContent.ItemType<HundredNeedles>()), position, newVelocity, ModContent.ProjectileType<Needle>(), 1, 0, player.whoAmI);
 			}
 			return false;
+		}
+
+		public override bool MagicPrefix()
+		{
+			return true;
 		}
 	}
 }

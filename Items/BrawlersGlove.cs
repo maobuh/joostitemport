@@ -1,8 +1,8 @@
-using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using joostitemport.Projectiles;
 
 namespace joostitemport.Items
 {
@@ -19,36 +19,28 @@ namespace joostitemport.Items
 
         public override void SetDefaults()
         {
-            Item.damage = 1;
+            Item.damage = 100;
             Item.DamageType = DamageClass.Melee;
             Item.value = Item.sellPrice(0, 1, 0, 0);
             Item.rare = ItemRarityID.LightPurple;
-            Item.useTime = 1;
             Item.useStyle = ItemUseStyleID.Thrust;
-            Item.useAnimation = 5;
+            Item.noMelee = true;
+			Item.noUseGraphic = true;
+            Item.useTime = 10;
+            Item.useAnimation = 10;
             Item.width = 24;
             Item.height = 24;
             Item.knockBack = 0;
 			Item.autoReuse = true;
 			Item.useTurn = true;
+			Item.shoot = ModContent.ProjectileType<Projectiles.BrawlersGlove>();
+            Item.shootSpeed = 10;
         }
 
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        // makes it so player can use the item with right click
+        public override bool AltFunctionUse(Player player)
         {
-            player.UpdateDead();
-            if (!player.releaseRight || !player.releaseLeft)
-            {
-                player.bodyVelocity = Vector2.Multiply(player.bodyVelocity, 2000000);
-            }
+            return true;
         }
-
-        // public override bool AltFunctionUse(Player player)
-        // {
-        //     while (player.altFunctionUse == 2)
-        //     {
-
-        //     }
-        //     return true;
-        // }
     }
 }

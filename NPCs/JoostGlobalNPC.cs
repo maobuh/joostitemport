@@ -11,6 +11,7 @@ namespace joostitemport.NPCs
     {
         public override void SetupTravelShop(int[] shop, ref int nextSlot)
         {
+            // add brawler's glove to travelling merchant shop
             shop[nextSlot] = ModContent.ItemType<BrawlersGlove>();
             nextSlot++;
         }
