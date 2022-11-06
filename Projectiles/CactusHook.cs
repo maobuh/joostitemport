@@ -309,14 +309,10 @@ namespace joostitemport.Projectiles
                     num85 = mountedCenter.Y - vector14.Y;
                     Color color15 = Lighting.GetColor((int)vector14.X / 16, (int)(vector14.Y / 16f));
                     SpriteEffects effects = SpriteEffects.None;
-                    if (Projectile.spriteDirection == -1)
-                    {
-                        effects = SpriteEffects.FlipHorizontally;
-                    }
-                    Main.spriteBatch.Draw((Texture2D) ModContent.Request<Texture2D>("joostitemport/Projectiles/CactusHookChain", (AssetRequestMode)2), 
-                                            new Vector2(vector14.X - Main.screenPosition.X, vector14.Y - Main.screenPosition.Y), 
-                                            new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.textureMaxHeight, Main.textureMaxWidth)), 
-                                            color15, rotation13, new Vector2((float)Main.textureMaxWidth, (float)Main.textureMaxHeight * pullSpeed), 
+                    Main.spriteBatch.Draw((Texture2D) ModContent.Request<Texture2D>("joostitemport/Projectiles/CactusHookChain", (AssetRequestMode)2),
+                                            new Vector2(vector14.X - Main.screenPosition.X, vector14.Y - Main.screenPosition.Y),
+                                            new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, 24, 16)),
+                                            color15, rotation13, new Vector2(12, 24),
                                             1f, effects, 0f);
                 }
             }
