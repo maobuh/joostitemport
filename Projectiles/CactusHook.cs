@@ -14,7 +14,7 @@ namespace joostitemport.Projectiles
     {
         private bool isHooked;
         private bool canGrab = true;
-        private bool jump;
+        private bool jump = false;
         private bool retreat;
         private float pullTime = 0;
         private float pullSpeed = 40f;
@@ -196,9 +196,11 @@ namespace joostitemport.Projectiles
                 {
                     pullTime = 0;
                 }
-                if (player.releaseJump)
-                {
+                if (!player.releaseJump) {
                     jump = true;
+                }
+                if (jump) {
+                    isHooked = false;
                 }
             }
             else
