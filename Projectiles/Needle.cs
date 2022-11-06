@@ -9,7 +9,7 @@ namespace joostitemport.Projectiles
 {
 	public class Needle : ModProjectile
 	{
-		private int bunces = 10;
+		private int bunces = 3;
 		public override void SetDefaults()
 		{
 			Projectile.damage = 50;
@@ -29,12 +29,12 @@ namespace joostitemport.Projectiles
 				SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
 				// If the projectile hits the left or right side of the tile, reverse the X velocity
 				if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > float.Epsilon) {
-					Projectile.velocity.X = -oldVelocity.X * 0.3f;
+					Projectile.velocity.X = -(oldVelocity.X * 0.7f);
 				}
 
 				// If the projectile hits the top or bottom side of the tile, reverse the Y velocity
 				if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > float.Epsilon) {
-					Projectile.velocity.Y = -oldVelocity.Y * 0.3f;
+					Projectile.velocity.Y = -(oldVelocity.Y * 0.7f);
 				}
 				bunces--;
 			}
