@@ -16,7 +16,7 @@ namespace joostitemport.Items
             Item.rare = 2;
             Item.value = Item.sellPrice(0, 5, 0, 0);
         }
-        
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Cactus Worm Hook");

@@ -52,7 +52,7 @@ namespace joostitemport.Projectiles
 
         public override float GrappleRange()
         {
-            return 420f;
+            return 1000f;
         }
 
         public override void NumGrappleHooks(Player player, ref int numHooks)
