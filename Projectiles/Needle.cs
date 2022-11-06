@@ -20,6 +20,7 @@ namespace joostitemport.Projectiles
 			Projectile.aiStyle = ProjAIStyleID.Arrow;
 			Projectile.tileCollide = true;
 			Projectile.friendly = true;
+			Projectile.timeLeft = 180;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity) {
 			if (bunces > 0)
@@ -28,12 +29,12 @@ namespace joostitemport.Projectiles
 				SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
 				// If the projectile hits the left or right side of the tile, reverse the X velocity
 				if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > float.Epsilon) {
-					Projectile.velocity.X = -oldVelocity.X;
+					Projectile.velocity.X = -oldVelocity.X * 0.3f;
 				}
 
 				// If the projectile hits the top or bottom side of the tile, reverse the Y velocity
 				if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > float.Epsilon) {
-					Projectile.velocity.Y = -oldVelocity.Y;
+					Projectile.velocity.Y = -oldVelocity.Y * 0.3f;
 				}
 				bunces--;
 			}
