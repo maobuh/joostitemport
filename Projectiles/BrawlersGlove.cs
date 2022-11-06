@@ -58,6 +58,14 @@ namespace joostitemport.Projectiles
                 Projectile.timeLeft = 180;
                 grabTarget = target;
             }
+            else
+            {
+                Vector2 addedVelocity = Vector2.Multiply(Vector2.Normalize(Projectile.velocity), 10);
+                // knock them back a bit but in the direction of where the projectile hits them
+                target.velocity = addedVelocity;
+                
+                player.velocity = addedVelocity;
+            }
             // 10 frames of immunity if you hit someone
             player.immuneTime = 10;
         }
