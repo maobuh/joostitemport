@@ -20,7 +20,6 @@ namespace joostitemport.Items
 		{
 			Item.damage = 1;
 			Item.noMelee = true;
-			Item.crit = -100;
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 10;
 			Item.width = 28;
@@ -43,14 +42,14 @@ namespace joostitemport.Items
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.Cactus, 10);
 			recipe.AddIngredient(ItemID.Stinger);
-			recipe.AddTile(TileID.WorkBenches);
+			recipe.AddIngredient(ItemID.Book);
 			recipe.Register();
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// 15 degrees but in radians for the spread of the needles
-			const float spread = 0.261799f;
+			const float spread = 0.1309f;
 			// makes 4 needles when shoot
 			for (int i = 0; i < 4; i++)
 			{
@@ -63,6 +62,11 @@ namespace joostitemport.Items
 				Projectile.NewProjectile(player.GetSource_OpenItem(ModContent.ItemType<HundredNeedles>()), position, newVelocity, ModContent.ProjectileType<Needle>(), 1, 0, player.whoAmI);
 			}
 			return false;
+		}
+
+		public override bool MagicPrefix()
+		{
+			return true;
 		}
 	}
 }
