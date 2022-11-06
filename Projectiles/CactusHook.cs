@@ -17,8 +17,8 @@ namespace joostitemport.Projectiles
         private bool jump;
         private bool retreat;
         private float pullTime = 0;
-        private float pullSpeed = 20f;
-        private float retreatSpeed = 13;
+        private float pullSpeed = 40f;
+        private float retreatSpeed = 40;
         private Vector2 vel = Vector2.Zero;
         public override void SetDefaults()
         {
