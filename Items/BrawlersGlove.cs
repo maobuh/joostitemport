@@ -20,7 +20,7 @@ namespace joostitemport.Items
 
         public override void SetDefaults()
         {
-            Item.damage = 1;
+            Item.damage = 50;
             Item.DamageType = DamageClass.Melee;
             Item.value = Item.sellPrice(0, 1, 0, 0);
             Item.rare = ItemRarityID.LightPurple;
