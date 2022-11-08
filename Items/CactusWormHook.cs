@@ -13,14 +13,14 @@ namespace joostitemport.Items
             Item.CloneDefaults(ItemID.AmethystHook);
             Item.shootSpeed = 20f; // how quickly the hook is shot.
             Item.shoot = ModContent.ProjectileType<CactusHook>();
-            Item.rare = 2;
-            Item.value = Item.sellPrice(0, 5, 0, 0);
+            Item.rare = ItemRarityID.Lime;
+            Item.value = Item.sellPrice(0, 50, 0, 0);
         }
 
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Cactus Worm Hook");
-			Tooltip.SetDefault("Hold the grapple button to have the hook go through tiles\n" + 
+			Tooltip.SetDefault("Hold the grapple button to have the hook go through tiles\n" +
                 "Let go of the grapple button to grip tile\n" +
                 "Pulls you through tiles");
 		}
