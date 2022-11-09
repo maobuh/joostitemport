@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using IL.Terraria.GameContent.RGB;
 
 namespace joostitemport.Projectiles
 {
