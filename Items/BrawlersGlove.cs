@@ -6,7 +6,6 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items
 {
-    [AutoloadEquip(EquipType.HandsOn)]
     public class BrawlersGlove : ModItem
     {
         // timer for enforcing useSpeed on right click

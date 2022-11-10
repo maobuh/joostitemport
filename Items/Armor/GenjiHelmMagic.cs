@@ -15,5 +15,14 @@ namespace joostitemport.Items.Armor
         {
             
         }
+        public override bool IsArmorSet(Item head, Item body, Item legs)
+        {
+            return true;
+        }
+
+        public override void UpdateArmorSet(Player player)
+        {
+            player.setBonus = "Press " ;
+        }
     }
 }

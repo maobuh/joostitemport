@@ -4,16 +4,17 @@ using Terraria.ID;
 
 namespace joostitemport.Items.Armor
 {
-    class GenjiLeggingsMagic : ModItem
+    class GenjiLeggings : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("");
-            Tooltip.SetDefault("");
+            DisplayName.SetDefault("Genji Leggings");
+            Tooltip.SetDefault("so fast...");
         }
         public override void SetDefaults()
         {
-            
+            Item.wornArmor = true;
+            Item.legSlot = 1;
         }
     }
 }

@@ -133,11 +133,12 @@ namespace joostitemport.Projectiles
         public override void OnSpawn(IEntitySource source)
         {
             Player player = Main.player[Projectile.owner];
-            // if player is right clicking it is a grab and the projectile will not die when it hits something
+            // if player is right clicking it is a grab and the projectile will not die when it hits something and the projectiles position will be synced with all clients on a server
             if (player.controlUseTile)
             {
                 Projectile.penetrate = -1;
                 grab = true;
+                Projectile.netUpdate = true;
             }
             // otherwise its just punch
             else
