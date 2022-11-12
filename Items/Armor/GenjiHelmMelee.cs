@@ -17,6 +17,7 @@ namespace joostitemport.Items.Armor
         public override void SetDefaults()
         {
             Item.wornArmor = true;
+            Item.headSlot = 1;
             Item.width = 26;
             Item.height = 26;
             Item.value = 10000000;
