@@ -15,6 +15,18 @@ namespace joostitemport.Items.Armor
         {
             Item.wornArmor = true;
             Item.legSlot = 1;
+			Item.width = 18;
+			Item.height = 18;
+			Item.value = 10000000;
+			Item.rare = ItemRarityID.Purple;
+			Item.defense = 20;
+			Item.lifeRegen = 8;
         }
+        public override void UpdateEquip(Player player)
+		{
+			player.moveSpeed *= 1.85f;
+			player.accRunSpeed *= 1.85f;
+			player.maxRunSpeed *= 1.85f;
+		}
     }
 }

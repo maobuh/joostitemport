@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -6,22 +7,22 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items.Armor
 {
-    class GenjiHelmMagic : ModItem
+    public class GenjiHelmSummon : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Azure Genji Helm");
-            Tooltip.SetDefault("65% Increased Magic damage\n35% Reduced Mana Usage");
+            DisplayName.SetDefault("Silver Genji Helm");
+            Tooltip.SetDefault("75% Increased Minion damage and Knockback\nMax sentries increased by 4");
         }
+
         public override void SetDefaults()
         {
-            Item.headSlot = 1;
             Item.wornArmor = true;
             Item.width = 26;
             Item.height = 24;
             Item.value = 10000000;
             Item.rare = ItemRarityID.Purple;
-            Item.defense = 25;
+            Item.defense = 20;
         }
         public override void ModifyTooltips(List<TooltipLine> list)
         {
@@ -35,29 +36,26 @@ namespace joostitemport.Items.Armor
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == ModContent.ItemType<GenjiChestMagic>() && legs.type == ModContent.ItemType<GenjiLeggings>();
+            return body.type == ModContent.ItemType<GenjiChestSummon>() && legs.type == ModContent.ItemType<GenjiLeggings>();
         }
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Press the Armor Ability Hotkey to cast Bitter End\n" +
-                "This consumes all of your mana and cant be used while you have mana sickness";
-            player.GetModPlayer<JoostPlayer>().GMagic = true;
+            player.setBonus = "Enkidu will fight for you";
+            player.AddBuff(mod.BuffType("EnkiduMinion"), 2);
+            player.GetModPlayer<JoostPlayer>().EnkiduMinion = true;
+        }
+        public override void UpdateEquip(Player player)
+        {
+            player.GetDamage<SummonDamageClass>() += 0.75f;
+            player.GetKnockback<SummonDamageClass>() *= 1.75f;
+            player.maxTurrets += 4;
         }
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadowSubtle = true;
             player.armorEffectDrawShadowLokis = true;
-            if (player.statMana >= player.statManaMax2 && !player.HasBuff(BuffID.ManaSickness) && player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly")] + player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly2")] <= 0)
-            {
-                player.armorEffectDrawOutlines = true;
-            }
-        }
-        public override void UpdateEquip(Player player)
-        {
-            player.GetDamage<MagicDamageClass>() += 0.65f;
-            player.manaCost *= 0.65f;
-
+            player.armorEffectDrawOutlines = true;
         }
         public override void AddRecipes()
         {

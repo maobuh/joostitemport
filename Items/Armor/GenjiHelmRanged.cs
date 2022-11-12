@@ -1,27 +1,26 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-
 namespace joostitemport.Items.Armor
 {
-    class GenjiHelmMagic : ModItem
+    public class GenjiHelmRanged : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Azure Genji Helm");
-            Tooltip.SetDefault("65% Increased Magic damage\n35% Reduced Mana Usage");
+            DisplayName.SetDefault("Crimson Genji Helm");
+            Tooltip.SetDefault("50% Increased Ranged damage\nYou no longer consume ammo");
         }
         public override void SetDefaults()
         {
-            Item.headSlot = 1;
             Item.wornArmor = true;
-            Item.width = 26;
-            Item.height = 24;
+            Item.width = 28;
+            Item.height = 26;
             Item.value = 10000000;
             Item.rare = ItemRarityID.Purple;
-            Item.defense = 25;
+            Item.defense = 30;
         }
         public override void ModifyTooltips(List<TooltipLine> list)
         {
@@ -35,29 +34,28 @@ namespace joostitemport.Items.Armor
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == ModContent.ItemType<GenjiChestMagic>() && legs.type == ModContent.ItemType<GenjiLeggings>();
+            return body.type == ModContent.ItemType<GenjiChestRanged>() && legs.type == ModContent.ItemType<GenjiLeggings>();
         }
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Press the Armor Ability Hotkey to cast Bitter End\n" +
-                "This consumes all of your mana and cant be used while you have mana sickness";
-            player.GetModPlayer<JoostPlayer>().GMagic = true;
+            player.setBonus = "Press the Armor Ability key to sacrifice all your defense for increased ranged ability";
+            player.GetModPlayer<JoostPlayer>().gRanged = true;
+        }
+        public override void UpdateEquip(Player player)
+        {
+            player.GetDamage<RangedDamageClass>() += 0.50f;
+            player.GetModPlayer<JoostModPlayer>().ammoConsume = 0; // player shouldnt use ammo when they shoot idk how tho fck
+
         }
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadowSubtle = true;
             player.armorEffectDrawShadowLokis = true;
-            if (player.statMana >= player.statManaMax2 && !player.HasBuff(BuffID.ManaSickness) && player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly")] + player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly2")] <= 0)
+            if (player.HasBuff(mod.BuffType("gRangedBuff")))
             {
                 player.armorEffectDrawOutlines = true;
             }
-        }
-        public override void UpdateEquip(Player player)
-        {
-            player.GetDamage<MagicDamageClass>() += 0.65f;
-            player.manaCost *= 0.65f;
-
         }
         public override void AddRecipes()
         {
