@@ -17,8 +17,8 @@ namespace joostitemport.Projectiles
         private bool jump = false;
         private bool retreat;
         private float pullTime = 0;
-        private float pullSpeed = 40f;
-        private float retreatSpeed = 40;
+        private readonly float pullSpeed = 40f;
+        private readonly float retreatSpeed = 40;
         private Vector2 vel = Vector2.Zero;
         public override void SetDefaults()
         {
@@ -78,10 +78,9 @@ namespace joostitemport.Projectiles
                 Projectile.Kill();
             }
             Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
-            Vector2 vector6 = new Vector2(Projectile.position.X + (float)Projectile.width * 0.5f, Projectile.position.Y + (float)Projectile.height * 0.5f);
+            Vector2 vector6 = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f));
             float num69 = mountedCenter.X - vector6.X;
             float num70 = mountedCenter.Y - vector6.Y;
-            float num71 = (float)Math.Sqrt((double)(num69 * num69 + num70 * num70));
             Projectile.rotation = (float)Math.Atan2((double)num70, (double)num69) - 1.57f;
             Projectile.direction = (Projectile.rotation < 0 && Projectile.rotation > -3.14f) ? -1 : 1;
             Projectile.spriteDirection = Projectile.direction;
@@ -136,8 +135,8 @@ namespace joostitemport.Projectiles
                         Vector2 vector9;
                         vector9.X = (float)(num128 * 16);
                         vector9.Y = (float)(num129 * 16);
-                        if (Projectile.position.X + (float)(Projectile.width / 2) > vector9.X && Projectile.position.X + (float)(Projectile.width / 2) < vector9.X + 16f 
-                            && Projectile.position.Y + (float)(Projectile.height / 2) > vector9.Y && Projectile.position.Y + (float)(Projectile.height / 2) < vector9.Y + 16f 
+                        if (Projectile.position.X + (float)(Projectile.width / 2) > vector9.X && Projectile.position.X + (float)(Projectile.width / 2) < vector9.X + 16f
+                            && Projectile.position.Y + (float)(Projectile.height / 2) > vector9.Y && Projectile.position.Y + (float)(Projectile.height / 2) < vector9.Y + 16f
                             && Main.tile[num128, num129].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num128, num129].TileType] || Main.tile[num128, num129].TileType == 314))
                         {
                             flag3 = false;
@@ -153,12 +152,12 @@ namespace joostitemport.Projectiles
                 if (Math.Abs(player.Center.X - Projectile.Center.X) < 8)
                 {
                     player.velocity.X = 0;
-                    player.position.X = Projectile.Center.X - player.width / 2;
+                    player.position.X = Projectile.Center.X - (player.width / 2);
                 }
                 if (Math.Abs(player.Center.Y - Projectile.Center.Y) < 8)
                 {
                     player.velocity.Y = 0;
-                    player.position.Y = Projectile.Center.Y - player.height / 2;
+                    player.position.Y = Projectile.Center.Y - (player.height / 2);
                 }
                 if (player.itemAnimation == 0)
                 {
@@ -185,7 +184,7 @@ namespace joostitemport.Projectiles
                     {
                         pullTime = (int)(Vector2.Distance(player.Center, Projectile.Center) / pullSpeed);
                     }
-                    player.position = (Projectile.Center + (Projectile.DirectionTo(player.Center) * pullTime * pullSpeed)) - player.Size / 2;
+                    player.position = (Projectile.Center + (Projectile.DirectionTo(player.Center) * pullTime * pullSpeed)) - (player.Size / 2);
                     if (Projectile.soundDelay <= 0 && Collision.SolidCollision(player.position, player.width, player.height))
                     {
                         Projectile.soundDelay = 20;
@@ -238,8 +237,8 @@ namespace joostitemport.Projectiles
                         Vector2 vector8;
                         vector8.X = (float)(num115 * 16);
                         vector8.Y = (float)(num116 * 16);
-                        if (Projectile.position.X + (float)Projectile.width > vector8.X && Projectile.position.X < vector8.X + 16f 
-                            && Projectile.position.Y + (float)Projectile.height > vector8.Y && Projectile.position.Y < vector8.Y + 16f 
+                        if (Projectile.position.X + (float)Projectile.width > vector8.X && Projectile.position.X < vector8.X + 16f
+                            && Projectile.position.Y + (float)Projectile.height > vector8.Y && Projectile.position.Y < vector8.Y + 16f
                             && Main.tile[num115, num116].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num115, num116].TileType] || Main.tile[num115, num116].TileType == 314))
                         {
                             if (!retreat)
@@ -252,8 +251,8 @@ namespace joostitemport.Projectiles
                                 Projectile.velocity.Y = 0f;
                                 SoundEngine.PlaySound(SoundID.Item1, Projectile.position);
                                 isHooked = true;
-                                Projectile.position.X = (float)(num115 * 16 + 8 - Projectile.width / 2);
-                                Projectile.position.Y = (float)(num116 * 16 + 8 - Projectile.height / 2);
+                                Projectile.position.X = (float)((num115 * 16) + 8 - (Projectile.width / 2));
+                                Projectile.position.Y = (float)((num116 * 16) + 8 - (Projectile.height / 2));
                                 Projectile.netUpdate = true;
                             }
                             else
@@ -276,7 +275,6 @@ namespace joostitemport.Projectiles
                         break;
                     }
                 }
-
             }
 
             return false;
@@ -284,14 +282,14 @@ namespace joostitemport.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
-            Vector2 vector14 = new Vector2(Projectile.position.X + (float)Projectile.width * 0.5f, Projectile.position.Y + (float)Projectile.height * 0.5f);
+            Vector2 vector14 = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f));
             float num84 = mountedCenter.X - vector14.X;
             float num85 = mountedCenter.Y - vector14.Y;
             float rotation13 = (float)Math.Atan2((double)num85, (double)num84) - 1.57f;
             bool flag11 = true;
             while (flag11)
             {
-                float num86 = (float)Math.Sqrt((double)(num84 * num84 + num85 * num85));
+                float num86 = (float)Math.Sqrt((double)((num84 * num84) + (num85 * num85)));
                 if (num86 < 30f)
                 {
                     flag11 = false;
@@ -310,7 +308,7 @@ namespace joostitemport.Projectiles
                     num84 = mountedCenter.X - vector14.X;
                     num85 = mountedCenter.Y - vector14.Y;
                     Color color15 = Lighting.GetColor((int)vector14.X / 16, (int)(vector14.Y / 16f));
-                    SpriteEffects effects = SpriteEffects.None;
+                    const SpriteEffects effects = SpriteEffects.None;
                     Main.spriteBatch.Draw((Texture2D) ModContent.Request<Texture2D>("joostitemport/Projectiles/CactusHookChain", (AssetRequestMode)2),
                                             new Vector2(vector14.X - Main.screenPosition.X, vector14.Y - Main.screenPosition.Y),
                                             new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, 24, 16)),
@@ -322,4 +320,3 @@ namespace joostitemport.Projectiles
         }
     }
 }
-

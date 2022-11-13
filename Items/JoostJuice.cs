@@ -31,7 +31,7 @@ namespace joostitemport.Items
         public override void AddRecipes()
 		{
 			Recipe recipe = Recipe.Create(Item.type);
-			recipe.AddIngredient(ItemID.ChlorophyteOre); 
+			recipe.AddIngredient(ItemID.ChlorophyteOre);
 			recipe.AddIngredient(ItemID.RegenerationPotion);
 			recipe.AddIngredient(ItemID.SwiftnessPotion);
 			recipe.AddIngredient(ItemID.IronskinPotion);

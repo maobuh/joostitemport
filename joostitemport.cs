@@ -4,6 +4,5 @@ namespace joostitemport
 {
 	public class joostitemport : Mod
 	{
-		
 	}
 }

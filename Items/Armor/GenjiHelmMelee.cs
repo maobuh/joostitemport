@@ -54,13 +54,20 @@ namespace joostitemport.Items.Armor
         {
             player.GetDamage<MeleeDamageClass>() += 0.50f;
             player.GetAttackSpeed<MeleeDamageClass>() *= 1.25f;
-
         }
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
             // recipe.AddIngredient();
             recipe.Register();
+        }
+
+        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        {
+            if ()
+            {
+                
+            }
         }
     }
 }

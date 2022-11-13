@@ -48,7 +48,7 @@ namespace joostitemport.Items
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			// 15 degrees but in radians for the spread of the needles
+			// 7.5 degrees but in radians for the spread of the needles
 			const float spread = 0.1309f;
 			// makes 4 needles when shoot
 			for (int i = 0; i < 4; i++)
@@ -59,7 +59,7 @@ namespace joostitemport.Items
 				double randomAngle = baseAngle + ((Main.rand.NextFloat() - 0.5f) * spread);
 				Vector2 newVelocity = new(baseSpeed * (float)Math.Sin(randomAngle), baseSpeed * (float)Math.Cos(randomAngle));
 				// make new projectile
-				Projectile.NewProjectile(player.GetSource_OpenItem(ModContent.ItemType<HundredNeedles>()), position, newVelocity, ModContent.ProjectileType<Needle>(), 1, 0, player.whoAmI);
+				Projectile.NewProjectile(source, position, newVelocity, ModContent.ProjectileType<Needle>(), 1, 0, player.whoAmI);
 			}
 			return false;
 		}
