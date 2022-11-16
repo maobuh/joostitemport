@@ -24,9 +24,9 @@ namespace joostitemport.Items.Armor
         }
         public override void UpdateEquip(Player player)
 		{
-			player.moveSpeed *= 1.85f;
-			player.accRunSpeed *= 1.85f;
-			player.maxRunSpeed *= 1.85f;
+			player.moveSpeed *= 3;
+			player.accRunSpeed *= 3;
+			player.maxRunSpeed *= 3;
 		}
     }
 }

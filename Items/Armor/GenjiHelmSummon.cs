@@ -42,8 +42,8 @@ namespace joostitemport.Items.Armor
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = "Enkidu will fight for you";
-            player.AddBuff(mod.BuffType("EnkiduMinion"), 2);
-            player.GetModPlayer<JoostPlayer>().EnkiduMinion = true;
+            // player.AddBuff(mod.BuffType("EnkiduMinion"), 2);
+            // player.GetModPlayer<JoostPlayer>().EnkiduMinion = true;
         }
         public override void UpdateEquip(Player player)
         {

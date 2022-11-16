@@ -42,16 +42,16 @@ namespace joostitemport.Items.Armor
         {
             player.setBonus = "Press the Armor Ability Hotkey to cast Bitter End\n" +
                 "This consumes all of your mana and cant be used while you have mana sickness";
-            player.GetModPlayer<JoostPlayer>().GMagic = true;
+            // player.GetModPlayer<JoostPlayer>().GMagic = true;
         }
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadowSubtle = true;
             player.armorEffectDrawShadowLokis = true;
-            if (player.statMana >= player.statManaMax2 && !player.HasBuff(BuffID.ManaSickness) && player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly")] + player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly2")] <= 0)
-            {
-                player.armorEffectDrawOutlines = true;
-            }
+            // if (player.statMana >= player.statManaMax2 && !player.HasBuff(BuffID.ManaSickness) && player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly")] + player.ownedProjectileCounts[mod.ProjectileType("BitterEndFriendly2")] <= 0)
+            // {
+            //     player.armorEffectDrawOutlines = true;
+            // }
         }
         public override void UpdateEquip(Player player)
         {

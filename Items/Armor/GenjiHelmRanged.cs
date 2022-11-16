@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -8,6 +7,8 @@ namespace joostitemport.Items.Armor
 {
     public class GenjiHelmRanged : ModItem
     {
+        int armorBuffTimer = 120;
+        bool gRanged;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Crimson Genji Helm");
@@ -40,23 +41,35 @@ namespace joostitemport.Items.Armor
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "Press the Armor Ability key to sacrifice all your defense for increased ranged ability";
-            player.GetModPlayer<JoostPlayer>().gRanged = true;
+            player.setBonus = "Press the Armor Ability key to sacrifice all your defense for increased ranged ability for 2 seconds with no cooldown";
+            if (joostitemport.ArmorAbilityHotKey.JustPressed && armorBuffTimer == 120) {
+                gRanged = true;
+            }
         }
         public override void UpdateEquip(Player player)
         {
             player.GetDamage<RangedDamageClass>() += 0.50f;
-            player.GetModPlayer<JoostModPlayer>().ammoConsume = 0; // player shouldnt use ammo when they shoot idk how tho fck
-
+            // player.GetModPlayer<JoostModPlayer>().ammoConsume = 0; // player shouldnt use ammo when they shoot idk how tho fck
+            if (armorBuffTimer <= 0)
+            {
+                gRanged = false;
+                armorBuffTimer = 120;
+            }
+            else if (gRanged)
+            {
+                player.GetDamage<RangedDamageClass>() *= 1 + (player.statDefense * 0.005f);
+                player.statDefense = 0;
+                armorBuffTimer--;
+            }
         }
         public override void ArmorSetShadows(Player player)
         {
             player.armorEffectDrawShadowSubtle = true;
             player.armorEffectDrawShadowLokis = true;
-            if (player.HasBuff(mod.BuffType("gRangedBuff")))
-            {
-                player.armorEffectDrawOutlines = true;
-            }
+            // if (player.HasBuff(mod.BuffType("gRangedBuff")))
+            // {
+            //     player.armorEffectDrawOutlines = true;
+            // }
         }
         public override void AddRecipes()
         {
