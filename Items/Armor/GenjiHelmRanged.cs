@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace joostitemport.Items.Armor
 {
     public class GenjiHelmRanged : ModItem
-    {
+    { // buh
         int armorBuffTimer = 120;
         bool gRanged;
         public override void SetStaticDefaults()
