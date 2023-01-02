@@ -17,7 +17,7 @@ namespace joostitemport.Projectiles
         private bool jump;
         private bool retreat;
         private float pullTime;
-        private readonly float pullSpeed = 40f;
+        private readonly float pullSpeed = 20f;
         private readonly float retreatSpeed = 40;
         private Vector2 vel = Vector2.Zero;
         public override void SetDefaults()
@@ -174,21 +174,16 @@ namespace joostitemport.Projectiles
                         player.direction = -1;
                     }
                 }
+                // no fucking clue why its 30 but it works. no idea why not 0 or 1000
                 if (Vector2.Distance(player.Center, Projectile.Center) > 30)
                 {
-                    if (Collision.SolidCollision(player.position, player.width, player.height))
-                    {
-                        pullTime -= 0.5f;
-                    }
-                    else
-                    {
-                        pullTime--;
-                    }
+                    pullTime = (int)(Vector2.Distance(player.Center, Projectile.Center) / pullSpeed);
                     if (pullTime <= 0)
                     {
-                        pullTime = (int)(Vector2.Distance(player.Center, Projectile.Center) / pullSpeed);
+                        pullTime = 0;
                     }
-                    player.position = Projectile.Center + (Projectile.DirectionTo(player.Center) * pullTime * pullSpeed) - (player.Size / 2);
+                    // this is the line that changes the path of the pull
+                    player.position = Projectile.Center - (player.DirectionTo(Projectile.Center) * pullTime * pullSpeed) - (player.Size / 2);
                     if (Projectile.soundDelay <= 0 && Collision.SolidCollision(player.position, player.width, player.height))
                     {
                         Projectile.soundDelay = 20;
