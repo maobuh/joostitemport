@@ -105,7 +105,7 @@ namespace joostitemport.Projectiles
                 player.sandStorm = false;
                 player.wingTime = 0;
                 Projectile.ai[0] = 2f;
-                Projectile.velocity = default(Vector2);
+                Projectile.velocity = default;
                 Projectile.timeLeft = 2;
                 int num124 = (int)(Projectile.position.X / 16f) - 1;
                 int num125 = (int)((Projectile.position.X + (float)Projectile.width) / 16f) + 2;

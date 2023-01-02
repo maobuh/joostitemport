@@ -34,12 +34,12 @@ namespace joostitemport.Projectiles
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (grab && grabTarget != null && grabTarget.active)
+            if (grab && grabTarget?.active == true)
             {
                 // teleport the target to the player
                 grabTarget.Center = player.Center;
             }
-            else if (grab && grabTargetPlayer != null && grabTargetPlayer.active)
+            else if (grab && grabTargetPlayer?.active == true)
             {
                 // teleport the target to the player
                 grabTargetPlayer.Center = player.Center;
