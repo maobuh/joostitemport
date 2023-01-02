@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.Audio;
 using Terraria.ModLoader;
-using IL.Terraria.GameContent.RGB;
 
 namespace joostitemport.Projectiles
 {
@@ -35,12 +34,12 @@ namespace joostitemport.Projectiles
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (grab && grabTarget != null && grabTarget.active)
+            if (grab && grabTarget?.active == true)
             {
                 // teleport the target to the player
                 grabTarget.Center = player.Center;
             }
-            else if (grab && grabTargetPlayer != null && grabTargetPlayer.active)
+            else if (grab && grabTargetPlayer?.active == true)
             {
                 // teleport the target to the player
                 grabTargetPlayer.Center = player.Center;
@@ -134,11 +133,12 @@ namespace joostitemport.Projectiles
         public override void OnSpawn(IEntitySource source)
         {
             Player player = Main.player[Projectile.owner];
-            // if player is right clicking it is a grab and the projectile will not die when it hits something
+            // if player is right clicking it is a grab and the projectile will not die when it hits something and the projectiles position will be synced with all clients on a server
             if (player.controlUseTile)
             {
                 Projectile.penetrate = -1;
                 grab = true;
+                Projectile.netUpdate = true;
             }
             // otherwise its just punch
             else
