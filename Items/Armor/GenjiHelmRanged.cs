@@ -49,7 +49,6 @@ namespace joostitemport.Items.Armor
         public override void UpdateEquip(Player player)
         {
             player.GetDamage<RangedDamageClass>() += 0.50f;
-            player.IsAmmoFreeThisShot()
             // player.GetModPlayer<JoostModPlayer>().ammoConsume = 0; // player shouldnt use ammo when they shoot idk how tho fck
             if (armorBuffTimer <= 0)
             {
