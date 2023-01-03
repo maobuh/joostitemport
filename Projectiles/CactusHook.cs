@@ -15,7 +15,6 @@ namespace joostitemport.Projectiles
         private bool isHooked;
         private bool canGrab = true;
         private bool retreat;
-        private float pullTime;
         private readonly float pullSpeed = 20f;
         private readonly float retreatSpeed = 40;
         public override void SetDefaults()
@@ -168,10 +167,8 @@ namespace joostitemport.Projectiles
                 }
                 if (Vector2.Distance(player.Center, Projectile.Center) > 16)
                 {
-                    pullTime = (int)(Vector2.Distance(player.Center, Projectile.Center) / pullSpeed);
                     // this is the line that changes the path of the pull
                     player.position += player.velocity;
-                    // player.position = Projectile.Center - (player.DirectionTo(Projectile.Center) * pullTime * pullSpeed) - (player.Size / 2);
                     if (Projectile.soundDelay <= 0 && Collision.SolidCollision(player.position, player.width, player.height))
                     {
                         Projectile.soundDelay = 20;
@@ -180,10 +177,8 @@ namespace joostitemport.Projectiles
                 }
                 else
                 {
-                    pullTime = 0;
                     player.position.X = Projectile.Center.X - (player.width / 2);
                     player.position.Y = Projectile.Center.Y - (player.height / 2);
-                    // for a specific bug with brawlers glove projectiles
                     player.velocity = Vector2.Zero;
                 }
                 if (!player.releaseJump) {
@@ -202,10 +197,6 @@ namespace joostitemport.Projectiles
             else
             {
                 Projectile.ai[0] = 0f;
-                if (!retreat)
-                {
-                    Projectile.velocity = Projectile.velocity;
-                }
                 for (int iX = startPosX; iX < endPosX; iX++)
                 {
                     int iY = startPosY;
@@ -218,10 +209,6 @@ namespace joostitemport.Projectiles
                             && Projectile.position.Y + Projectile.height > currPos.Y && Projectile.position.Y < currPos.Y + 16f
                             && Main.tile[iX, iY].HasUnactuatedTile && (Main.tileSolid[Main.tile[iX, iY].TileType] || Main.tile[iX, iY].TileType == TileID.MinecartTrack))
                         {
-                            if (!retreat)
-                            {
-                                Projectile.velocity = Projectile.velocity;
-                            }
                             if (canGrab && !player.controlHook)
                             {
                                 Projectile.velocity.X = 0f;
