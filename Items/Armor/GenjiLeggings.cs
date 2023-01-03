@@ -28,5 +28,11 @@ namespace joostitemport.Items.Armor
 			player.accRunSpeed *= 3;
 			player.maxRunSpeed *= 3;
 		}
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            // recipe.AddIngredient();
+            recipe.Register();
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace joostitemport.Items.Armor
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = "Swing the Masamune when you hit an enemy with a melee weapon";
-            // player.GetModPlayer<JoostPlayer>().gMelee = true;
+            player.GetModPlayer<JoostPlayer>().gMelee = true;
         }
         public override void ArmorSetShadows(Player player)
         {
@@ -60,14 +60,6 @@ namespace joostitemport.Items.Armor
             Recipe recipe = CreateRecipe();
             // recipe.AddIngredient();
             recipe.Register();
-        }
-
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
-        {
-            // if ()
-            {
-
-            }
         }
     }
 }
