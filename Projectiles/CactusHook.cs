@@ -14,12 +14,10 @@ namespace joostitemport.Projectiles
     {
         private bool isHooked;
         private bool canGrab = true;
-        private bool jump;
         private bool retreat;
         private float pullTime;
         private readonly float pullSpeed = 20f;
         private readonly float retreatSpeed = 40;
-        private Vector2 vel = Vector2.Zero;
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
@@ -62,10 +60,6 @@ namespace joostitemport.Projectiles
 
         public override bool PreAI()
         {
-            if (vel == Vector2.Zero)
-            {
-                vel = Projectile.velocity * 1f;
-            }
             Player player = Main.player[Projectile.owner];
             if (player.dead || (Vector2.Distance(player.Center, Projectile.Center) > GrappleRange() && !isHooked))
             {
@@ -123,12 +117,20 @@ namespace joostitemport.Projectiles
                 player.rocketFrame = false;
                 player.canRocket = false;
                 player.rocketRelease = false;
-                player.fallStart = (int)(player.Center.Y / 16f);
-                player.sandStorm = false;
+                player.fallStart = (int)(player.Center.Y / 16f);    // so the player doesnt take fall damage 
                 player.wingTime = 0;
                 Projectile.ai[0] = 2f;
                 Projectile.velocity = default;
                 Projectile.timeLeft = 2;
+
+                // prevent player from needing to use a double jump item to get out of hook
+                // not sure if theres a better way to do this
+                player.canJumpAgain_Blizzard = false;
+                player.canJumpAgain_Cloud = false;
+                player.canJumpAgain_Fart = false;
+                player.canJumpAgain_Sail = false;
+                player.canJumpAgain_Sandstorm = false;
+
                 for (int iX = startPosX; iX < endPosX; iX++)
                 {
                     for (int iY = startPosY; iY < endPosY; iY++)
@@ -153,16 +155,6 @@ namespace joostitemport.Projectiles
                 }
                 retreat = false;
                 player.velocity = player.DirectionTo(Projectile.Center) * pullSpeed;
-                if (Math.Abs(player.Center.X - Projectile.Center.X) < 8)
-                {
-                    player.velocity.X = 0;
-                    player.position.X = Projectile.Center.X - (player.width / 2);
-                }
-                if (Math.Abs(player.Center.Y - Projectile.Center.Y) < 8)
-                {
-                    player.velocity.Y = 0;
-                    player.position.Y = Projectile.Center.Y - (player.height / 2);
-                }
                 if (player.itemAnimation == 0)
                 {
                     if (player.velocity.X > 0)
@@ -174,16 +166,12 @@ namespace joostitemport.Projectiles
                         player.direction = -1;
                     }
                 }
-                // no fucking clue why its 30 but it works. no idea why not 0 or 1000
-                if (Vector2.Distance(player.Center, Projectile.Center) > 30)
+                if (Vector2.Distance(player.Center, Projectile.Center) > 16)
                 {
                     pullTime = (int)(Vector2.Distance(player.Center, Projectile.Center) / pullSpeed);
-                    if (pullTime <= 0)
-                    {
-                        pullTime = 0;
-                    }
                     // this is the line that changes the path of the pull
-                    player.position = Projectile.Center - (player.DirectionTo(Projectile.Center) * pullTime * pullSpeed) - (player.Size / 2);
+                    player.position += player.velocity;
+                    // player.position = Projectile.Center - (player.DirectionTo(Projectile.Center) * pullTime * pullSpeed) - (player.Size / 2);
                     if (Projectile.soundDelay <= 0 && Collision.SolidCollision(player.position, player.width, player.height))
                     {
                         Projectile.soundDelay = 20;
@@ -193,14 +181,21 @@ namespace joostitemport.Projectiles
                 else
                 {
                     pullTime = 0;
+                    player.position.X = Projectile.Center.X - (player.width / 2);
+                    player.position.Y = Projectile.Center.Y - (player.height / 2);
                     // for a specific bug with brawlers glove projectiles
                     player.velocity = Vector2.Zero;
                 }
                 if (!player.releaseJump) {
-                    jump = true;
-                }
-                if (jump) {
                     isHooked = false;
+
+                    // reset players double jumps
+                    // player.RefreshDoubleJumps() is private :(
+                    player.canJumpAgain_Blizzard = true;
+                    player.canJumpAgain_Cloud = true;
+                    player.canJumpAgain_Fart = true;
+                    player.canJumpAgain_Sail = true;
+                    player.canJumpAgain_Sandstorm = true;
                 }
             }
             // i think this is hook go out
@@ -209,7 +204,7 @@ namespace joostitemport.Projectiles
                 Projectile.ai[0] = 0f;
                 if (!retreat)
                 {
-                    Projectile.velocity = vel * 3;
+                    Projectile.velocity = Projectile.velocity;
                 }
                 for (int iX = startPosX; iX < endPosX; iX++)
                 {
@@ -225,7 +220,7 @@ namespace joostitemport.Projectiles
                         {
                             if (!retreat)
                             {
-                                Projectile.velocity = vel;
+                                Projectile.velocity = Projectile.velocity;
                             }
                             if (canGrab && !player.controlHook)
                             {
