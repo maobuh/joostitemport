@@ -66,10 +66,6 @@ namespace joostitemport.Projectiles
                 isHooked = false;
                 canGrab = false;
             }
-            if (Vector2.Distance(player.Center, Projectile.Center) > GrappleRange() * 3)
-            {
-                Projectile.Kill();
-            }
             Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
             Vector2 directionVector = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f));
             float directionX = mountedCenter.X - directionVector.X;
