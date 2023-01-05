@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,6 +9,8 @@ namespace joostitemport.Projectiles.Minions
 {
 	public class EnkiduMinion : ModProjectile
 	{
+		const float overlapVelocity = 0.04f;
+		const int frameSpeed = 5;
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Enkidu");
@@ -20,25 +23,20 @@ namespace joostitemport.Projectiles.Minions
 		public override void AI() {
 			// active check (checks if player is alive, despawns minion if the player died)
 			Player player = Main.player[Projectile.owner];
-			if (player.dead || !player.active) {
+			if (player.dead) {
 				player.ClearBuff(ModContent.BuffType<Buffs.EnkiduMinion>());
 				player.GetModPlayer<JoostPlayer>().gSummon = false;
 			}
 			if (player.HasBuff(ModContent.BuffType<Buffs.EnkiduMinion>())) {
 				Projectile.timeLeft = 2;
 			}
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<EnkiduMinion>()] > 1 || player.GetModPlayer<JoostPlayer>().gSummon) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<EnkiduMinion>()] > 1 || !player.GetModPlayer<JoostPlayer>().gSummon) {
 				Projectile.Kill();
 			}
 			// general behaviour
 			Vector2 idlePosition = player.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-			idlePosition.X += 48f * player.direction;
-
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is Projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -player.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
+			idlePosition.Y -= 80f; // Go up 80 coordinates (5 tiles from the center of the player)
+			idlePosition.X -= 80 * player.direction;
 
 			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
 
@@ -54,24 +52,34 @@ namespace joostitemport.Projectiles.Minions
 			}
 
 			// If your minion is flying, you want to do this independently of any conditions
-			// float overlapVelocity = 0.04f;
-			// for (int i = 0; i < Main.maxProjectiles; i++) {
-			// 	// Fix overlap with other minions
-			// 	Projectile other = Main.projectile[i];
-			// 	if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-			// 		if (Projectile.position.X < other.position.X) Projectile.velocity.X -= overlapVelocity;
-			// 		else Projectile.velocity.X += overlapVelocity;
+			for (int i = 0; i < Main.maxProjectiles; i++) {
+				// Fix overlap with other minions
+				Projectile other = Main.projectile[i];
+				if (i != Projectile.whoAmI && other.active && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
+					if (Projectile.position.X < other.position.X) Projectile.velocity.X -= overlapVelocity;
+					else Projectile.velocity.X += overlapVelocity;
 
-			// 		if (Projectile.position.Y < other.position.Y) Projectile.velocity.Y -= overlapVelocity;
-			// 		else Projectile.velocity.Y += overlapVelocity;
-			// 	}
-			// }
+					if (Projectile.position.Y < other.position.Y) Projectile.velocity.Y -= overlapVelocity;
+					else Projectile.velocity.Y += overlapVelocity;
+				}
+			}
 			// find target
 			
 			// movement
+			// divided by 100 because it feels right :)
+			// magical number
+			float speed = distanceToIdlePosition / 16;
+			float inertia = 5f * distanceToIdlePosition / 16;
+			// only move toward player if its far away
+			if (distanceToIdlePosition > 20f) {
+				vectorToIdlePosition.Normalize();
+				vectorToIdlePosition *= speed;
+				Projectile.velocity = ((Projectile.velocity * (inertia - 1)) + vectorToIdlePosition) / inertia;
+			}
 
 			// animation and visuals
-			const int frameSpeed = 5;
+			// rotate slightly in the direction its moving
+			Projectile.rotation = Projectile.velocity.X * 0.05f;
 			Projectile.frameCounter++;
 			// change Projectile visual every 5 frames
 			if (Projectile.frameCounter >= frameSpeed) {

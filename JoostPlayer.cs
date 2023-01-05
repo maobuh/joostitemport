@@ -27,7 +27,7 @@ namespace joostitemport
                 gSummon = false;
             }
             if (gSummon && Player.ownedProjectileCounts[ModContent.ProjectileType<EnkiduMinion>()] <= 0) {
-                Projectile.NewProjectile(Player.GetSource_Buff(ModContent.BuffType<Buffs.EnkiduMinion>()), Player.Center, Vector2.Zero, ModContent.ProjectileType<EnkiduMinion>(), 0, 0);
+                Projectile.NewProjectile(Player.GetSource_Misc("fuck you"), Player.Center, Vector2.Zero, ModContent.ProjectileType<EnkiduMinion>(), 0, 0, Player.whoAmI);
             }
         }
         public override void OnHitAnything(float x, float y, Entity victim)

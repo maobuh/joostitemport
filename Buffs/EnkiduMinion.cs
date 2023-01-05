@@ -21,7 +21,6 @@ namespace joostitemport.Buffs
 				player.DelBuff(buffIndex);
 				buffIndex--;
 			}
-
 		}
 	}
 }
