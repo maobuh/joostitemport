@@ -32,6 +32,8 @@ namespace joostitemport.Projectiles
         {
             damage = (target.statLifeMax / 20) + (target.statDefense / 2);
             crit = true;
+            target.noKnockback = true;
+            target.immuneTime = 0;
         }
         public override bool CanHitPlayer(Player target)
         {
@@ -41,6 +43,8 @@ namespace joostitemport.Projectiles
         {
             damage = (target.statLifeMax / 20) + (target.statDefense / 2);
             crit = true;
+            target.noKnockback = true;
+            target.immuneTime = 0;
         }
         public override bool? CanHitNPC(NPC target)
         {
