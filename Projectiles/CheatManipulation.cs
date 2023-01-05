@@ -28,9 +28,19 @@ namespace joostitemport.Projectiles
         {
             return Main.myPlayer == Projectile.owner && Main.mouseRight;
         }
+        public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)
+        {
+            damage = (target.statLifeMax / 20) + (target.statDefense / 2);
+            crit = true;
+        }
         public override bool CanHitPlayer(Player target)
         {
             return Main.myPlayer == Projectile.owner && Main.mouseRight;
+        }
+        public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+        {
+            damage = (target.statLifeMax / 20) + (target.statDefense / 2);
+            crit = true;
         }
         public override bool? CanHitNPC(NPC target)
         {
