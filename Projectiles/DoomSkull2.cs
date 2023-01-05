@@ -6,7 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent;
 
-namespace JoostMod.Projectiles
+namespace joostitemport.Projectiles
 {
 	public class DoomSkull2 : ModProjectile
 	{
@@ -53,7 +53,7 @@ namespace JoostMod.Projectiles
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Width() * 0.5f, Projectile.height * 0.5f);
+            Vector2 drawOrigin = new(TextureAssets.Projectile[Projectile.type].Width() * 0.5f, Projectile.height * 0.5f);
             SpriteEffects effects = SpriteEffects.None;
             if (Projectile.spriteDirection == -1)
             {
@@ -63,8 +63,8 @@ namespace JoostMod.Projectiles
             {
                 Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Rectangle? rect = new Rectangle?(new Rectangle(0, (Main.projectileTexture[Projectile.type].Height / Main.projFrames[Projectile.type]) * Projectile.frame, Main.projectileTexture[Projectile.type].Width, Main.projectileTexture[Projectile.type].Height / Main.projFrames[Projectile.type]));
-                spriteBatch.Draw(Main.projectileTexture[Projectile.type], drawPos, rect, color, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0f);
+                Rectangle? rect = new Rectangle?(new Rectangle(0, (TextureAssets.Projectile[Projectile.type].Height() / Main.projFrames[Projectile.type]) * Projectile.frame, TextureAssets.Projectile[Projectile.type].Width(), TextureAssets.Projectile[Projectile.type].Height() / Main.projFrames[Projectile.type]));
+                Main.EntitySpriteDraw((Texture2D)TextureAssets.Projectile[Projectile.type], drawPos, rect, color, Projectile.rotation, drawOrigin, Projectile.scale, effects, 0);
             }
             return true;
         }
