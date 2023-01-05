@@ -83,9 +83,9 @@ namespace joostitemport.Projectiles
                 Vector2 pos4 = Projectile.Center + new Vector2((float)Math.Cos(rot) * 24, (float)Math.Sin(rot) * 24);
 
                 Vector2 mousePos = Main.MouseWorld;
-                if (Main.myPlayer == Projectile.owner)
+                if (Main.myPlayer != Projectile.owner)
                 {
-                    mousePos = Main.MouseWorld;
+                    return;
                 }
 
                 Vector2 dir1 = mousePos - pos1;
