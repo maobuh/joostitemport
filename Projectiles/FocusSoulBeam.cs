@@ -10,10 +10,17 @@ namespace joostitemport.Projectiles
 {
 	public class FocusSoulBeam : ModProjectile
 	{
-		private const int MAX_CHARGE = 30;
+		private const float MAX_CHARGE = 10f;
 		private const int MOVE_DISTANCE = 20;
-		private const float LASER_LENGTH = 1000f;
-		public int Charge;
+		private const float MAX_DISTANCE = 2000f;
+		public float Distance {
+			get => Projectile.ai[0];
+			set => Projectile.ai[0] = value;
+		}
+		public float Charge {
+			get => Projectile.localAI[0];
+			set => Projectile.localAI[0] = value;
+		}
 		public bool IsAtMaxCharge => Charge == MAX_CHARGE;
         public override void SetStaticDefaults()
 		{
@@ -46,7 +53,7 @@ namespace joostitemport.Projectiles
 		/// <summary>
 		/// Draws the sprite of the laser
 		/// </summary>
-		public static void DrawLaser(Texture2D texture, Vector2 start, Vector2 unit,
+		public void DrawLaser(Texture2D texture, Vector2 start, Vector2 unit,
 								float step, float rotation = 0f, float scale = 1f, int transDist = 50)
 		{
 			float r = unit.ToRotation() + rotation;
@@ -57,7 +64,7 @@ namespace joostitemport.Projectiles
 			#endregion
 
 			#region Draw laser body
-			for (float i = step; i <= LASER_LENGTH; i += step)
+			for (float i = step; i <= Distance; i += step)
 			{
 				start += step * unit;
 				Main.EntitySpriteDraw(texture, start - Main.screenPosition,
@@ -80,8 +87,21 @@ namespace joostitemport.Projectiles
 		{
 			if (Charge < MAX_CHARGE) return false;
 			float point = 0f;
-			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + (Projectile.velocity * LASER_LENGTH), 10, ref point);
+			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + (Projectile.velocity * Distance), 10, ref point);
 		}
+
+		// public override bool OnTileCollide(Vector2 oldVelocity) {
+		// 	Vector2 dustPos = Projectile.Center;
+		// 	for (float i = 10; i <= Distance; i += 10)
+		// 	{
+		// 		dustPos += 10 * Projectile.velocity;
+		// 	}
+		// 	Point scanAreaStart = Projectile.TopLeft.ToTileCoordinates();
+		// 	Point scanAreaEnd = Projectile.BottomRight.ToTileCoordinates();
+        //     Projectile.CreateImpactExplosion(2, dustPos, ref scanAreaStart, ref scanAreaEnd, Projectile.width, out _);
+		// 	Collision.HitTiles(dustPos, oldVelocity, Projectile.width, Projectile.height);
+		// 	return false;
+		// }
 
         /// <summary>
         /// The AI of the Projectile
@@ -105,8 +125,9 @@ namespace joostitemport.Projectiles
             {
                 rot -= Projectile.spriteDirection * (Math.PI / 180);
             }
+			// particle effects on the 4 circles
             Projectile.velocity = new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot));
-            int chargeFact = (int)(Charge / 20f);
+            int chargeFact = (int)(Charge / 20);
             Vector2 dustVelocity = Vector2.UnitX * 18f;
             dustVelocity = dustVelocity.RotatedBy(Projectile.rotation - 1.57f, default);
             Vector2 spawnPos = Projectile.Center + dustVelocity;
@@ -120,28 +141,34 @@ namespace joostitemport.Projectiles
                 dust.scale = Main.rand.Next(10, 20) * 0.05f;
             }
             #endregion
-            if (Charge <= MAX_CHARGE) return;
+            if (Charge < MAX_CHARGE) return;
             SetLaserPosition();
 
-            Vector2 dustPos = Projectile.Center + (Projectile.velocity * LASER_LENGTH);
+			Vector2 dustPos = Projectile.Center;
+			for (float i = 10; i <= Distance; i += 10)
+			{
+				dustPos += 10 * Projectile.velocity;
+			}
             for (int i = 0; i < 2; ++i)
             {
                 float num1 = Projectile.velocity.ToRotation() + ((Main.rand.Next(2) == 1 ? -1.0f : 1.0f) * 1.57f);
                 float num2 = (float)((Main.rand.NextDouble() * 0.8f) + 1.0f);
                 Vector2 dustVel = new((float)Math.Cos(num1) * num2, (float)Math.Sin(num1) * num2);
-                Dust dust = Main.dust[Dust.NewDust(dustPos, 0, 0, 92, dustVel.X, dustVel.Y, 0, new Color(), 1f)];
+                Dust dust = Main.dust[Dust.NewDust(dustPos, 0, 0, 92, dustVel.X, dustVel.Y)];
                 dust.noGravity = true;
                 dust.scale = 1.2f;
             }
 			CastLights();
         }
+		// sets Distance to the distance between the player and where the laser would first collide with a tile
 		private void SetLaserPosition(){
 			// Set laser tail position and dusts
-            for (int i = MOVE_DISTANCE; i <= 2000f; i += 5)
+            for (Distance = MOVE_DISTANCE; Distance <= MAX_DISTANCE; Distance += 5f)
             {
-                Projectile.Center += Projectile.velocity * i;
-                if (!Collision.CanHitLine(Projectile.Center, 1, 1, Projectile.Center, 1, 1))
+                Vector2 start = Projectile.Center + (Projectile.velocity * Distance);
+                if (!Collision.CanHitLine(Projectile.Center, 1, 1, start, 1, 1))
                 {
+					Distance -= 5f;
                     break;
                 }
             }
@@ -149,7 +176,7 @@ namespace joostitemport.Projectiles
 		private void CastLights() {
 			//Add lights
             DelegateMethods.v3_1 = new Vector3(0.1f, 0.8f, 1f);
-            Utils.PlotTileLine(Projectile.Center, Projectile.Center + (Projectile.velocity * (LASER_LENGTH - MOVE_DISTANCE)), 26, new Utils.TileActionAttempt(DelegateMethods.CastLight));
+            Utils.PlotTileLine(Projectile.Center, Projectile.Center + (Projectile.velocity * (Distance - MOVE_DISTANCE)), 26, new Utils.TileActionAttempt(DelegateMethods.CastLight));
 		}
 
 		public override bool ShouldUpdatePosition()
@@ -160,7 +187,7 @@ namespace joostitemport.Projectiles
 		{
 			DelegateMethods.tilecut_0 = TileCuttingContext.AttackProjectile;
 			Vector2 unit = Projectile.velocity;
-			Utils.PlotTileLine(Projectile.Center, Projectile.Center + (unit * LASER_LENGTH), (Projectile.width + 16) * Projectile.scale, new Utils.TileActionAttempt(DelegateMethods.CutTiles));
+			Utils.PlotTileLine(Projectile.Center, Projectile.Center + (unit * Distance), (Projectile.width + 16) * Projectile.scale, new Utils.TileActionAttempt(DelegateMethods.CutTiles));
 		}
 	}
 }
