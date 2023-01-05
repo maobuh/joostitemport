@@ -10,13 +10,15 @@ namespace joostitemport.Projectiles
 {
 	public class FocusSoulBeam : ModProjectile
 	{
-		private const float MAX_CHARGE = 10f;
+		private const float MAX_CHARGE = 30f;
 		private const int MOVE_DISTANCE = 20;
 		private const float MAX_DISTANCE = 2000f;
+		// Distance that the laser should travel (would be equal to MAX_DISTANCE unless it would collide with a tile)
 		public float Distance {
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
 		}
+		// Frames needed for the laser to charge
 		public float Charge {
 			get => Projectile.localAI[0];
 			set => Projectile.localAI[0] = value;
@@ -90,19 +92,6 @@ namespace joostitemport.Projectiles
 			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + (Projectile.velocity * Distance), 10, ref point);
 		}
 
-		// public override bool OnTileCollide(Vector2 oldVelocity) {
-		// 	Vector2 dustPos = Projectile.Center;
-		// 	for (float i = 10; i <= Distance; i += 10)
-		// 	{
-		// 		dustPos += 10 * Projectile.velocity;
-		// 	}
-		// 	Point scanAreaStart = Projectile.TopLeft.ToTileCoordinates();
-		// 	Point scanAreaEnd = Projectile.BottomRight.ToTileCoordinates();
-        //     Projectile.CreateImpactExplosion(2, dustPos, ref scanAreaStart, ref scanAreaEnd, Projectile.width, out _);
-		// 	Collision.HitTiles(dustPos, oldVelocity, Projectile.width, Projectile.height);
-		// 	return false;
-		// }
-
         /// <summary>
         /// The AI of the Projectile
         /// </summary>
@@ -125,8 +114,16 @@ namespace joostitemport.Projectiles
             {
                 rot -= Projectile.spriteDirection * (Math.PI / 180);
             }
-			// particle effects on the 4 circles
-            Projectile.velocity = new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot));
+            #endregion
+			CreateCircleDust(pos, rot);
+            if (Charge < MAX_CHARGE) return;
+            SetLaserPosition();
+			CreateLaserTipDust();
+			CastLights();
+        }
+		// create particle effects on the 4 circles
+		private void CreateCircleDust(Vector2 pos, double rot) {
+			Projectile.velocity = new Vector2((float)Math.Cos(rot), (float)Math.Sin(rot));
             int chargeFact = (int)(Charge / 20);
             Vector2 dustVelocity = Vector2.UnitX * 18f;
             dustVelocity = dustVelocity.RotatedBy(Projectile.rotation - 1.57f, default);
@@ -140,10 +137,22 @@ namespace joostitemport.Projectiles
                 dust.noGravity = true;
                 dust.scale = Main.rand.Next(10, 20) * 0.05f;
             }
-            #endregion
-            if (Charge < MAX_CHARGE) return;
-            SetLaserPosition();
-
+		}
+		// sets Distance to the distance between the player and where the laser would first collide with a tile
+		private void SetLaserPosition() {
+			// Set laser tail position and dusts
+            for (Distance = MOVE_DISTANCE; Distance <= MAX_DISTANCE; Distance += 5f)
+            {
+                Vector2 start = Projectile.Center + (Projectile.velocity * Distance);
+                if (!Collision.CanHitLine(Projectile.Center, 1, 1, start, 1, 1))
+                {
+					Distance -= 5f;
+                    break;
+                }
+            }
+		}
+		// creates particle effects at the tip of the laser (including tile collision)
+		private void CreateLaserTipDust() {
 			Vector2 dustPos = Projectile.Center;
 			for (float i = 10; i <= Distance; i += 10)
 			{
@@ -158,21 +167,8 @@ namespace joostitemport.Projectiles
                 dust.noGravity = true;
                 dust.scale = 1.2f;
             }
-			CastLights();
-        }
-		// sets Distance to the distance between the player and where the laser would first collide with a tile
-		private void SetLaserPosition(){
-			// Set laser tail position and dusts
-            for (Distance = MOVE_DISTANCE; Distance <= MAX_DISTANCE; Distance += 5f)
-            {
-                Vector2 start = Projectile.Center + (Projectile.velocity * Distance);
-                if (!Collision.CanHitLine(Projectile.Center, 1, 1, start, 1, 1))
-                {
-					Distance -= 5f;
-                    break;
-                }
-            }
 		}
+		// overlaps the laser with a line of light
 		private void CastLights() {
 			//Add lights
             DelegateMethods.v3_1 = new Vector3(0.1f, 0.8f, 1f);
