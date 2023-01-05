@@ -25,7 +25,7 @@ namespace joostitemport.Projectiles
         }
         public override bool CanHitPvp(Player target)
         {
-            return false;
+            return true;
         }
         public override bool CanHitPlayer(Player target)
         {
