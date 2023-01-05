@@ -83,9 +83,11 @@ namespace joostitemport.Projectiles
                 Vector2 pos4 = Projectile.Center + new Vector2((float)Math.Cos(rot) * 24, (float)Math.Sin(rot) * 24);
 
                 Vector2 mousePos = Main.MouseWorld;
-                if (Main.myPlayer == Projectile.owner)
+                // otherwise 4*(num of players) lasers spawn for other players based on their mouse positions as well
+                if (Main.myPlayer != Projectile.owner)
                 {
-                    mousePos = Main.MouseWorld;
+                    Projectile.netUpdate = false;
+                    return;
                 }
 
                 Vector2 dir1 = mousePos - pos1;
