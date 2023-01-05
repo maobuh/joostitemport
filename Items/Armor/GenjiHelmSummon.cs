@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using joostitemport.Buffs;
 
 namespace joostitemport.Items.Armor
 {
@@ -42,8 +43,8 @@ namespace joostitemport.Items.Armor
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = "Enkidu will fight for you";
-            // player.AddBuff(mod.BuffType("EnkiduMinion"), 2);
-            // player.GetModPlayer<JoostPlayer>().EnkiduMinion = true;
+            player.GetModPlayer<JoostPlayer>().gSummon = true;
+            player.AddBuff(ModContent.BuffType<EnkiduMinion>(), 2);
         }
         public override void UpdateEquip(Player player)
         {
