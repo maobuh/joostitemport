@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.Graphics;
+using joostitemport.Projectiles;
 
 namespace joostitemport.Projectiles
 {

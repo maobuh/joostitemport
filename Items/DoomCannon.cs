@@ -3,9 +3,8 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Projectiles;
 
-namespace joostitemport.Items.Rewards
+namespace joostitemport.Items
 {
 	public class DoomCannon : ModItem
 	{
