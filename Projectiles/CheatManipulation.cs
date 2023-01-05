@@ -22,6 +22,7 @@ namespace joostitemport.Projectiles
             Projectile.tileCollide = false;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 4;
+            Projectile.netImportant = true;
         }
         public override bool CanHitPvp(Player target)
         {
@@ -49,8 +50,6 @@ namespace joostitemport.Projectiles
             {
                 Projectile.position = Main.MouseWorld;
                 Projectile.netUpdate = true;
-            } else {
-                return;
             }
             for (int i = 0; i < Main.item.Length; i++)
             {
