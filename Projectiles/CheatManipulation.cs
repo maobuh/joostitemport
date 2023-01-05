@@ -25,11 +25,11 @@ namespace joostitemport.Projectiles
         }
         public override bool CanHitPvp(Player target)
         {
-            return true;
+            return Main.myPlayer == Projectile.owner && Main.mouseRight;
         }
         public override bool CanHitPlayer(Player target)
         {
-            return true;
+            return Main.myPlayer == Projectile.owner && Main.mouseRight;
         }
         public override bool? CanHitNPC(NPC target)
         {
@@ -49,9 +49,7 @@ namespace joostitemport.Projectiles
             {
                 Projectile.position = Main.MouseWorld;
                 Projectile.netUpdate = true;
-            } else {
-                return;
-            }
+            } 
             for (int i = 0; i < Main.item.Length; i++)
             {
                 if (Main.item[i].active)
