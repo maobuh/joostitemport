@@ -30,8 +30,6 @@ namespace joostitemport.Items
             Item.useStyle = 4;
             Item.value = 0;
             Item.rare = 10;
-            Item.damage = 0;
-            Item.knockBack = 0;
             Item.shoot = ModContent.ProjectileType<CheatManipulation>();
         }
         public override void ModifyTooltips(List<TooltipLine> list)
