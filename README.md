@@ -3,7 +3,7 @@ joost item ports.
 
 porting my favorite items from joostmod to 1.4 because i dont know if the guy who made joost is ever going to do anything
 
-Has not been tested extensively on multiplayer, so tell us about bugs (which we may or may not fix) on the steam page. :))
+Has not been tested extensively on multiplayer, so tell us about bugs (which we may or may not fix) on the steam page :))
 
 Items ported:
 - Cactus Juice
