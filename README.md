@@ -29,6 +29,7 @@ Changes from 1.3:
 **Brawlers Glove**
 - now with more bugs!!!
 - entirely reworked  ¯\\\_(ツ)\_/¯
+- but still makes u faster based on ur knockback (so have fun with knockback increasing stuff like fire gauntlet/titan potion)
 
 **Cactus Worm Hook**
 - Faster (its really fast)
