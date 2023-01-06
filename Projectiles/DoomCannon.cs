@@ -4,12 +4,20 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using Terraria.ID;
-using joostitemport.Projectiles;
 
 namespace joostitemport.Projectiles
 {
     public class DoomCannon : ModProjectile
     {
+        private const int CHARGE_INCREMENT = 30;
+        private const int TOTAL_FRAMES = CHARGE_INCREMENT * 11;
+        // frame of the animation at which charging the cannon slows down the player
+        private const int SLOW_FRAME = 5;
+        private const int INIT_SPD = 10;
+        private const float SPD_INC = 0.5f;
+        private const int INIT_DMG = 1;
+        private const float DMG_INC = 0.25f;
+        private const int DOOM2_FRAME = 180;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Doom Cannon");
@@ -71,84 +79,21 @@ namespace joostitemport.Projectiles
                         Projectile.netUpdate = true;
                     }
                     Projectile.velocity = dir;
-                } 
+                }
             }
             else
             {
                 Projectile.Kill();
             }
-            if (Projectile.ai[0] < 60)
-            {
-                Projectile.frame = 0;
-            }
-            else if (Projectile.ai[0] < 120)
-            {
-                Projectile.frame = 1;
-            }
-            else if (Projectile.ai[0] < 180)
-            {
-                Projectile.frame = 2;
-            }
-            else if (Projectile.ai[0] < 240)
-            {
-                Projectile.frame = 3;
-            }
-            else if (Projectile.ai[0] < 300)
-            {
-                Projectile.frame = 4;
-            }
-            else if (Projectile.ai[0] < 360)
-            {
-                Projectile.frame = 5;
-                player.velocity.X *= 0.99f;
-                if (player.velocity.Y * player.gravDir < 0)
-                {
-                    player.velocity.Y *= 0.99f;
-                }
-            }
-            else if (Projectile.ai[0] < 420)
-            {
-                Projectile.frame = 6;
-                player.velocity.X *= 0.975f;
-                if (player.velocity.Y * player.gravDir < 0)
-                {
-                    player.velocity.Y *= 0.985f;
-                }
-            }
-            else if (Projectile.ai[0] < 480)
-            {
-                Projectile.frame = 7;
-                player.velocity.X *= 0.96f;
-                if (player.velocity.Y * player.gravDir < 0)
-                {
-                    player.velocity.Y *= 0.96f;
-                }
-            }
-            else if (Projectile.ai[0] < 540)
-            {
-                Projectile.frame = 8;
-                player.velocity.X *= 0.945f;
-                if (player.velocity.Y * player.gravDir < 0)
-                {
-                    player.velocity.Y *= 0.945f;
-                }
-            }
-            else if (Projectile.ai[0] < 600)
-            {
-                Projectile.frame = 9;
-                player.velocity.X *= 0.93f;
-                if (player.velocity.Y * player.gravDir < 0)
-                {
-                    player.velocity.Y *= 0.93f;
-                }
-            }
-            else if (Projectile.ai[0] < 660)
-            {
-                Projectile.frame = 10;
-                player.velocity.X *= 0.915f;
-                if (player.velocity.Y * player.gravDir < 0)
-                {
-                    player.velocity.Y *= 0.915f;
+            if (Projectile.ai[0] < TOTAL_FRAMES) {
+                Projectile.frame = (int) Projectile.ai[0] / CHARGE_INCREMENT;
+                // slow down the player at some charge of the cannon
+                if (Projectile.frame >= SLOW_FRAME) {
+                    player.velocity.X *= 0.99f - ((Projectile.frame - SLOW_FRAME) * 0.15f);
+                    if (player.velocity.Y * player.gravDir < 0)
+                    {
+                        player.velocity.Y *= 0.99f - ((Projectile.frame - SLOW_FRAME) * 0.15f);
+                    }
                 }
             }
             else
@@ -173,15 +118,15 @@ namespace joostitemport.Projectiles
                 int dust3 = Dust.NewDust(new Vector2(player.Center.X - 4, player.Center.Y + (player.height / 2 * player.gravDir)), 1, 1, 261, -5, -3 * player.gravDir, 0, default, 1);
                 Main.dust[dust3].noGravity = true;
             }
-            if (Projectile.ai[0] <= 660)
+            if (Projectile.ai[0] <= TOTAL_FRAMES)
             {
                 Projectile.ai[0]++;
             }
-            if (Projectile.ai[0] == 660)
+            if (Projectile.ai[0] == TOTAL_FRAMES)
             {
                 SoundEngine.PlaySound(SoundID.Item42, Projectile.position); // i think the sounds wrong
             }
-            if (Projectile.ai[0] % 60 == 0)
+            if (Projectile.ai[0] % CHARGE_INCREMENT == 0)
             {
                 SoundEngine.PlaySound(SoundID.Item75, Projectile.position);
                 if (Projectile.ai[0] >= 360)
@@ -210,66 +155,18 @@ namespace joostitemport.Projectiles
                 int type = ModContent.ProjectileType<DoomSkull>();
                 float speed;
                 float mult;
-                if (Projectile.ai[0] < 120)
-                {
-                    speed = 10;
-                    mult = 1;
-                }
-                else if (Projectile.ai[0] < 180)
-                {
-                    speed = 11;
-                    mult = 2;
-                }
-                else if (Projectile.ai[0] < 240)
-                {
-                    speed = 12;
-                    mult = 3;
-                }
-                else if (Projectile.ai[0] < 300)
-                {
-                    speed = 13;
-                    mult = 4;
-                }
-                else if (Projectile.ai[0] < 360)
-                {
-                    speed = 14;
-                    mult = 5;
-                }
-                else if (Projectile.ai[0] < 420)
-                {
-                    type = ModContent.ProjectileType<DoomSkull2>();
-                    speed = 15;
-                    mult = 6;
-                }
-                else if (Projectile.ai[0] < 480)
-                {
-                    type = ModContent.ProjectileType<DoomSkull2>();
-                    speed = 16;
-                    mult = 7;
-                }
-                else if (Projectile.ai[0] < 540)
-                {
-                    type = ModContent.ProjectileType<DoomSkull2>();
-                    speed = 17;
-                    mult = 8;
-                }
-                else if (Projectile.ai[0] < 600)
-                {
-                    type = ModContent.ProjectileType<DoomSkull2>();
-                    speed = 18;
-                    mult = 9;
-                }
-                else if (Projectile.ai[0] < 660)
-                {
-                    type = ModContent.ProjectileType<DoomSkull2>();
-                    speed = 19;
-                    mult = 10;
+                if (Projectile.ai[0] < TOTAL_FRAMES && Projectile.frame >= 1) {
+                    speed = INIT_SPD + (SPD_INC * (Projectile.frame - 1));
+                    mult = INIT_DMG + (DMG_INC * (Projectile.frame - 1));
+                    if (Projectile.ai[0] > DOOM2_FRAME) {
+                        type = ModContent.ProjectileType<DoomSkull2>();
+                    }
                 }
                 else
                 {
                     type = ModContent.ProjectileType<DoomSkull3>();
                     speed = 7;
-                    mult = 11;
+                    mult = INIT_DMG + (DMG_INC * (Projectile.frame - 1));
                     SoundEngine.PlaySound(SoundID.Item74, Projectile.position);
                     pos = Projectile.Center + (Projectile.velocity * 140);
                 }
