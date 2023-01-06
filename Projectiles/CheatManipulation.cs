@@ -22,14 +22,29 @@ namespace joostitemport.Projectiles
             Projectile.tileCollide = false;
             Projectile.usesIDStaticNPCImmunity = true;
             Projectile.idStaticNPCHitCooldown = 4;
+            Projectile.netImportant = true;
         }
         public override bool CanHitPvp(Player target)
         {
-            return false;
+            return Main.myPlayer == Projectile.owner && Main.mouseRight;
+        }
+        public override void ModifyHitPvp(Player target, ref int damage, ref bool crit)
+        {
+            damage = (target.statLifeMax / 20) + (target.statDefense / 2);
+            crit = true;
+            target.noKnockback = true;
+            target.immuneTime = 0;
         }
         public override bool CanHitPlayer(Player target)
         {
-            return false;
+            return Main.myPlayer == Projectile.owner && Main.mouseRight;
+        }
+        public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+        {
+            damage = (target.statLifeMax / 20) + (target.statDefense / 2);
+            crit = true;
+            target.noKnockback = true;
+            target.immuneTime = 0;
         }
         public override bool? CanHitNPC(NPC target)
         {
@@ -43,7 +58,7 @@ namespace joostitemport.Projectiles
         public override void AI()
         {
             int enpc = (int)Projectile.ai[0] - 1;
-            //int pvp = (int)Projectile.ai[1] - 1;
+            int pvp = (int)Projectile.ai[1] - 1;
             Player player = Main.player[Projectile.owner];
             if (Main.myPlayer == Projectile.owner)
             {
@@ -64,6 +79,7 @@ namespace joostitemport.Projectiles
             }
             if (enpc >= 0)
             {
+                // moves the target
                 NPC target = Main.npc[enpc];
                 if (target.active && target.type != NPCID.TargetDummy)
                 {
@@ -77,7 +93,7 @@ namespace joostitemport.Projectiles
             }
             else
             {
-                /*if (pvp >= 0)
+                if (pvp >= 0)
                 {
                     Player pTarget = Main.player[pvp];
                     if (pTarget.active && !pTarget.dead)
@@ -101,7 +117,8 @@ namespace joostitemport.Projectiles
                         }
                     }
                     if (pvp < 0)
-                    {*/
+                    {
+                        // finds which target to move
                         for (int i = 0; i < 200; i++)
                         {
                             NPC target = Main.npc[i];
@@ -111,8 +128,8 @@ namespace joostitemport.Projectiles
                                 Projectile.ai[0] = i + 1;
                             }
                         }
-                    /*}
-                }*/
+                    }
+                }
             }
             bool channeling = player.channel && !player.noItems && !player.CCed;
             if (!channeling)
@@ -136,7 +153,7 @@ namespace joostitemport.Projectiles
                         }
                     }
                 }
-                /*else if (pvp >= 0)
+                else if (pvp >= 0)
                 {
                     Player pTarget = Main.player[pvp];
                     if (pTarget.active && !pTarget.dead)
@@ -152,7 +169,7 @@ namespace joostitemport.Projectiles
                             pTarget.velocity = vel;
                         }
                     }
-                }*/
+                }
                 Projectile.Kill();
             }
         }
