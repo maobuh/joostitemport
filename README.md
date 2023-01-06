@@ -45,6 +45,7 @@ Changes from 1.3:
 - less damage (16 per bobber)
 
 Crafting Recipes: **just use recipe browser mod :/**
+
 **Cactus Juice**
 - 1 _Cactus_ + 1 _Deathweed_ + 5 _Bottles_ => 5 _Cactus Juice_
 - Bottle
