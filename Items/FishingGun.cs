@@ -1,9 +1,11 @@
 using System;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using joostitemport.Projectiles;
+using Terraria.DataStructures;
 
 namespace joostitemport.Items
 {
@@ -19,7 +21,7 @@ namespace joostitemport.Items
             Item.width = 48;
             Item.height = 14;
             Item.damage = 10;
-            Item.ranged = true;
+            Item.DamageType = DamageClass.Ranged;
             Item.knockBack = 0;
             Item.useTime = 8;
             Item.useAnimation = 8;
@@ -33,60 +35,58 @@ namespace joostitemport.Items
             Item.fishingPole = 15;
         }
 
-        public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat)
-        {
-            if (JoostMod.instance.battleRodsLoaded)
-            {
-                mult *= BattleRodsFishingDamage / player.rangedDamage;
-            }
-        }
-        public override void GetWeaponCrit(Player player, ref int crit)
-        {
-            if (JoostMod.instance.battleRodsLoaded)
-            {
-                crit += BattleRodsCrit - player.rangedCrit;
-            }
-        }
-        public float BattleRodsFishingDamage
-        {
-            get { Player player = Main.player[Main.myPlayer]; return player.GetModPlayer<UnuBattleRods.FishPlayer>().bobberDamage; }
-        }
-        public int BattleRodsCrit
-        {
-            get { Player player = Main.player[Main.myPlayer]; return player.GetModPlayer<UnuBattleRods.FishPlayer>().bobberCrit; }
-        }
-        public override void ModifyTooltips(List<TooltipLine> list)
-        {
-            if (JoostMod.instance.battleRodsLoaded)
-            {
-                Player player = Main.player[Main.myPlayer];
-                int dmg = list.FindIndex(x => x.Name == "Damage");
-                list.RemoveAt(dmg);
-                list.Insert(dmg, new TooltipLine(mod, "Damage", player.GetWeaponDamage(Item) + " Fishing damage"));
-            }
-        }
+        // public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat)
+        // {
+        //     if (JoostMod.instance.battleRodsLoaded)
+        //     {
+        //         mult *= BattleRodsFishingDamage / player.GetDamage(DamageClass.Ranged);
+        //     }
+        // }
+        // public override void GetWeaponCrit(Player player, ref int crit)
+        // {
+        //     if (JoostMod.instance.battleRodsLoaded)
+        //     {
+        //         crit += BattleRodsCrit - player.GetCritChance(DamageClass.Ranged);
+        //     }
+        // }
+        // public float BattleRodsFishingDamage
+        // {
+        //     get { Player player = Main.player[Main.myPlayer]; return player.GetModPlayer<UnuBattleRods.FishPlayer>().bobberDamage; }
+        // }
+        // public int BattleRodsCrit
+        // {
+        //     get { Player player = Main.player[Main.myPlayer]; return player.GetModPlayer<UnuBattleRods.FishPlayer>().bobberCrit; }
+        // }
+        // public override void ModifyTooltips(List<TooltipLine> list)
+        // {
+        //     if (JoostMod.instance.battleRodsLoaded)
+        //     {
+        //         Player player = Main.player[Main.myPlayer];
+        //         int dmg = list.FindIndex(x => x.Name == "Damage");
+        //         list.RemoveAt(dmg);
+        //         list.Insert(dmg, new TooltipLine(mod, "Damage", player.GetWeaponDamage(Item) + " Fishing damage"));
+        //     }
+        // }
 
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
+            Recipe recipe = Recipe.Create(Item.type);
             recipe.AddIngredient(ItemID.Boomstick, 1);
             recipe.AddIngredient(ItemID.ReinforcedFishingPole, 1);
             recipe.AddTile(TileID.WorkBenches);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            recipe.Register();
         }
-        public override bool Shoot(Player player, ref Microsoft.Xna.Framework.Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            float spread = 45f * 0.0174f;
-            float baseSpeed = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
-            double startAngle = Math.Atan2(speedX, speedY) - spread / 2;
-            double deltaAngle = spread / 4f;
-            double offsetAngle;
-            int i;
-            for (i = 0; i < 4; i++)
+            const float spread = 45f * 0.0174f;
+            float baseSpeed = velocity.Length();
+            float startAngle = (float) Math.Atan2(velocity.X, velocity.Y) - (spread / 2);
+            const float deltaAngle = spread / 4f;
+            for (int i = 0; i < 4; i++)
             {
-                offsetAngle = startAngle + deltaAngle * i;
-                Projectile.NewProjectile(position.X, position.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), type, damage, knockBack, player.whoAmI);
+                float offsetAngle = startAngle + (deltaAngle * i);
+                Vector2 direction = new((float)Math.Sin(offsetAngle), (float)Math.Cos(offsetAngle));
+                Projectile.NewProjectile(source, position, baseSpeed * direction, type, damage, knockback, player.whoAmI);
             }
             return false;
         }
