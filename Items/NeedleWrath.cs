@@ -54,7 +54,9 @@ namespace joostitemport.Items
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            // recipe.AddIngredient(null, "Cactustoken", 1); // something post moon lord
+            recipe.AddIngredient(ModContent.ItemType<ThousandNeedles>(), 1); // something post moon lord
+            recipe.AddIngredient(ItemID.FragmentNebula, 5);
+            recipe.AddIngredient(ItemID.LunarBar, 1);
             recipe.Register();
         }
     }
