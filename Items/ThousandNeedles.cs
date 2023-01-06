@@ -64,7 +64,6 @@ namespace joostitemport.Items
 			}
 			return false;
 		}
-
 		public override bool MagicPrefix()
 		{
 			return true;

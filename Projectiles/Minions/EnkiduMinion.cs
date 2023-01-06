@@ -66,8 +66,8 @@ namespace joostitemport.Projectiles.Minions
 			// find target
 			
 			// movement
-			// divided by 100 because it feels right :)
-			// magical number
+			// divided by 16 because it is one tile
+			// speed and intertia based on how many tiles away the minion is
 			float speed = distanceToIdlePosition / 16;
 			float inertia = 5f * distanceToIdlePosition / 16;
 			// only move toward player if its far away
