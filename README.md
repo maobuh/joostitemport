@@ -17,7 +17,7 @@ Items ported:
 - Doom Cannon
 - Some Fishing Shotguns
 
-Changes from 1.3:
+**Changes from 1.3:**
 
 **Tome of Greater Manipulation**
 - Now works with pvp :)
@@ -44,7 +44,7 @@ Changes from 1.3:
 **Mechanical Fishing Shotgun**
 - less damage (16 per bobber)
 
-Crafting Recipes: **just use recipe browser mod :/**
+**Crafting Recipes: just use recipe browser mod :/**
 
 **Cactus Juice**
 - 1 _Cactus_ + 1 _Deathweed_ + 5 _Bottles_ => 5 _Cactus Juice_
