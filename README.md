@@ -32,7 +32,7 @@ Changes from 1.3:
 
 **Cactus Worm Hook**
 - Faster (its really fast)
-- Light on the end of the Hook (around 10 tiles)
+- Light on the end of the Hook
 - More Range (basically to the edge of the screen)
 
 **Doom Cannon**
