@@ -33,7 +33,7 @@ Changes from 1.3:
 **Cactus Worm Hook**
 - Faster (its really fast)
 - Light on the end of the Hook (around 10 tiles)
-- More Range (1000 tiles: basically to the edge of the screen)
+- More Range (basically to the edge of the screen)
 
 **Doom Cannon**
 - Charges twice as fast (5 seconds i think)
