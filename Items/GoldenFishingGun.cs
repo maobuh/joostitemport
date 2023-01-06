@@ -78,8 +78,8 @@ namespace joostitemport.Items
             Recipe recipe2 = recipe.Clone();
             Recipe recipe3 = recipe.Clone();
 
-            // recipe.AddIngredient(null, "MechanicalFishingGun");
-            // recipe.Register();
+            recipe.AddIngredient(null, "MechanicalFishingGun");
+            recipe.Register();
 
             recipe2.AddIngredient(null, "FishingGun");
             recipe2.Register();
