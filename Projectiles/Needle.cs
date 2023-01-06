@@ -22,6 +22,16 @@ namespace joostitemport.Projectiles
 			Projectile.friendly = true;
 			Projectile.timeLeft = 180;
 		}
+		public override void ModifyHitPlayer (Player target, ref int damage, ref bool crit) {
+			target.noKnockback = true;
+			target.immune = false;
+			target.immuneTime = 0;
+		}
+		public override void ModifyHitPvp (Player target, ref int damage, ref bool crit) {
+			target.noKnockback = true;
+			target.immune = false;
+			target.immuneTime = 0;
+		}
 		public override bool OnTileCollide(Vector2 oldVelocity) {
 			if (bunces > 0)
 			{

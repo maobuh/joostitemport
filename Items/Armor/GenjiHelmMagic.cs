@@ -57,7 +57,6 @@ namespace joostitemport.Items.Armor
         {
             player.GetDamage<MagicDamageClass>() += 0.65f;
             player.manaCost *= 0.65f;
-
         }
         public override void AddRecipes()
         {

@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Xna.Framework;
-using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -64,7 +63,40 @@ namespace joostitemport.Projectiles.Minions
 				}
 			}
 			// find target
-			
+			float distanceFromTarget = 700f;
+			Vector2 targetCenter = Projectile.position;
+			bool foundTarget = false;
+			// This code is required if your minion weapon has the targeting feature
+			if (player.HasMinionAttackTargetNPC) {
+				NPC npc = Main.npc[player.MinionAttackTargetNPC];
+				float between = Vector2.Distance(npc.Center, Projectile.Center);
+				// Reasonable distance away so it doesn't target across multiple screens
+				if (between < 2000f) {
+					distanceFromTarget = between;
+					targetCenter = npc.Center;
+					foundTarget = true;
+				}
+			}
+			if (!foundTarget) {
+				// This code is required either way, used for finding a target
+				for (int i = 0; i < Main.maxNPCs; i++) {
+					NPC npc = Main.npc[i];
+					if (npc.CanBeChasedBy()) {
+						float between = Vector2.Distance(npc.Center, Projectile.Center);
+						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
+						bool inRange = between < distanceFromTarget;
+						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
+						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
+						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
+						bool closeThroughWall = between < 100f;
+						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
+							distanceFromTarget = between;
+							targetCenter = npc.Center;
+							foundTarget = true;
+						}
+					}
+				}
+			}
 			// movement
 			// divided by 16 because it is one tile
 			// speed and intertia based on how many tiles away the minion is
@@ -76,7 +108,6 @@ namespace joostitemport.Projectiles.Minions
 				vectorToIdlePosition *= speed;
 				Projectile.velocity = ((Projectile.velocity * (inertia - 1)) + vectorToIdlePosition) / inertia;
 			}
-
 			// animation and visuals
 			// rotate slightly in the direction its moving
 			Projectile.rotation = Projectile.velocity.X * 0.05f;
