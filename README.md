@@ -43,3 +43,25 @@ Changes from 1.3:
 
 **Mechanical Fishing Shotgun**
 - less damage (16 per bobber)
+
+Crafting Recipes: **just use recipe browser mod :/**
+**Cactus Juice**
+- 1 _Cactus_ + 1 _Deathweed_ + 5 _Bottles_ => 5 _Cactus Juice_
+- Bottle
+
+**Joost Juice**
+- 1 _Chlorophyte Ore_ + 1 _Regen Potion_ + 1 _Swiftness Potion_ + 1 _Ironskin Potion_ + 1 _Heartreach Potion_ + 1 _Lifeforce Potion_ + 1 _Endurance Potion_ + 1 _Rage Potion_ + 1 _Wrath Potion_ + 1 _Warmth Potion_ + 1 _Summoning Potion_
+- Bottle
+
+**Focus Souls**
+- 50 _Ectoplasm_
+- Mythril Anvil
+
+**Brawler's Glove**
+- Sold by _Travelling Merchant_
+
+**Tome of Manipulation**
+- 1 _Book_ + 1 _Fallen Star_ + 1 _Gold/Platinum Bar_
+- Work Bench
+
+cant be bothered to write the rest...
