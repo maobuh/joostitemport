@@ -25,7 +25,7 @@ Changes from 1.3:
 - they bounce
 **Brawlers Glove**
 - now with more bugs!!!
-- entirely reworked  ¯\\_(ツ)_/¯
+- entirely reworked  ¯\\\_(ツ)\_/¯
 **Cactus Worm Hook**
 - Faster (its really fast)
 - Light on the end of the Hook (around 10 tiles)
