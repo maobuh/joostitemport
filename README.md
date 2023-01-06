@@ -18,21 +18,27 @@ Items ported:
 - Some Fishing Shotguns
 
 Changes from 1.3:
+
 **Tome of Greater Manipulation**
 - Now works with pvp :)
 - still a cheat item, be nice with your friends
+
 **Hundred/Thousand Needles**
 - they bounce
+
 **Brawlers Glove**
 - now with more bugs!!!
 - entirely reworked  ¯\\\_(ツ)\_/¯
+
 **Cactus Worm Hook**
 - Faster (its really fast)
 - Light on the end of the Hook (around 10 tiles)
 - More Range (1000 tiles: basically to the edge of the screen)
+
 **Doom Cannon**
 - Charges twice as fast (5 seconds i think)
 - Less Damage, Slower Projectile (except final big one)
 - Stats on huge skull shot (60 * 3.5 = 210 damage, 7 speed - whatever that means)
+
 **Mechanical Fishing Shotgun**
 - less damage (16 per bobber)
