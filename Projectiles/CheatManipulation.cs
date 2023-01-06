@@ -60,6 +60,7 @@ namespace joostitemport.Projectiles
             int enpc = (int)Projectile.ai[0] - 1;
             int pvp = (int)Projectile.ai[1] - 1;
             Player player = Main.player[Projectile.owner];
+            if (player.whoAmI != Main.myPlayer) return;
             if (Main.myPlayer == Projectile.owner)
             {
                 Projectile.position = Main.MouseWorld;
@@ -131,6 +132,7 @@ namespace joostitemport.Projectiles
                     }
                 }
             }
+            // throws the target if u stop holding left click
             bool channeling = player.channel && !player.noItems && !player.CCed;
             if (!channeling)
             {
