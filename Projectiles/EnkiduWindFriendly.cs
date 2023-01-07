@@ -8,15 +8,16 @@ namespace joostitemport.Projectiles
 {
 	public class EnkiduWindFriendly : ModProjectile
 	{
-		// 15 degrees in radians
-		const float spread = 0.261799f;
+		// larger number makes the outer projectiles go further away from the centre, no idea how much tho
+		const float spread = 5;
 		const float speed = 10;
 		bool foundTarget;
 		double timeToTarget;
 		float distanceFromTarget = 1080f;
-		const int chargeTime = 42;
-		double height;
+		const int chargeTime = 90;
 		Vector2 targetCenter;
+		Vector2 originalVelocity;
+		Vector2 directionToTarget;
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Enkidu's Wind");
@@ -29,7 +30,7 @@ namespace joostitemport.Projectiles
 			Projectile.friendly = true;
 			Projectile.penetrate = 32767;
 			Projectile.tileCollide = false;
-			Projectile.timeLeft = 600;
+			Projectile.timeLeft = 500;
 			Projectile.alpha = 255;
 			Projectile.extraUpdates = 1;
 			Projectile.DamageType = DamageClass.Summon;
@@ -49,7 +50,6 @@ namespace joostitemport.Projectiles
 			// wait for a few frames in place
 			// Projectile.ai[1] counts how many frames the projectile has been alive for
 			if (Projectile.ai[1] < chargeTime) {
-
 				if (Projectile.ai[1] % 2 == 0) {
 					Projectile.alpha -= 5;
 				}
@@ -57,7 +57,7 @@ namespace joostitemport.Projectiles
 			}
 			// find target
 			// find closest npc that can be targeted
-			Vector2 targetCenter = Projectile.position;
+			targetCenter = Projectile.position;
 			if (!foundTarget) {
 				for (int i = 0; i < Main.maxNPCs; i++) {
 					NPC npc = Main.npc[i];
@@ -71,23 +71,24 @@ namespace joostitemport.Projectiles
 							foundTarget = true;
 							// update the velocity to be in a straight line to where the target was once and then leave it
 							Projectile.velocity = Projectile.DirectionTo(targetCenter) * speed;
+							originalVelocity = Projectile.velocity;
 							timeToTarget = Vector2.Distance(targetCenter, Projectile.Center) / Projectile.velocity.Length();
-							// height used to calculate magnitude
-							height = Math.Tan(spread) * distanceFromTarget / 2;
+							directionToTarget = Vector2.Subtract(npc.Center, Projectile.Center);
 						}
 					}
 				}
 			}
 			// shoot towards them
-			if (foundTarget) { //  && Projectile.ai[1] < 42
+			if (foundTarget && Projectile.ai[1] - chargeTime < timeToTarget) { //  && Projectile.ai[1] < 42
 				// Projectile.ai[0] determines if this specific projectile is the straight line one or the curved ones
 				if (Projectile.ai[0] != 0) {
-					// find unit vector perpendicular to DirectionTo
-					Vector2 perpendicularVelocity = new(Projectile.DirectionTo(targetCenter).X, -Projectile.DirectionTo(targetCenter).X);
-					// multiply it by cos() * height * Projectile.ai[0]
-					perpendicularVelocity = perpendicularVelocity * (float)Math.Cos(distanceTravelled / distanceFromTarget) * (float)height * Projectile.ai[0];
+					// find unit vector perpendicular to the direction from the projectile to the target npc
+					Vector2 perpendicularVelocity = new(-directionToTarget.Y, directionToTarget.X);
+					perpendicularVelocity.Normalize();
+					// multiply it by cos() * spread * Projectile.ai[0]
+					perpendicularVelocity = perpendicularVelocity * (float)Math.Cos((Projectile.ai[1] - chargeTime) / timeToTarget * Math.PI) * spread * Projectile.ai[0];
 					// add it to original velocity
-
+					Projectile.velocity = originalVelocity + perpendicularVelocity;
 				}
 			}
 			// reached target location - starts going in a straight line now

@@ -87,11 +87,7 @@ namespace joostitemport.Projectiles.Minions
 						float between = Vector2.Distance(npc.Center, Projectile.Center);
 						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
 						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
+						if ((closest && inRange) || !foundTarget) {
 							distanceFromTarget = between;
 							targetCenter = npc.Center;
 							foundTarget = true;
@@ -101,11 +97,11 @@ namespace joostitemport.Projectiles.Minions
 			}
 			if (foundTarget) {
 				shootCooldown++;
-				if (shootCooldown > 30) {
+				if (shootCooldown > 15) {
 					// projectile will be in a random position within 4 tiles left or right of the player and 4 tiles up from the player
 					Vector2 projPos = new(Projectile.Center.X + ((Main.rand.NextFloat() - 0.5f) * 128), Projectile.Center.Y - (Main.rand.NextFloat() * 64));
 					// original damage and knockback calculation ported to 1.4 i think i think i dont know
-					int damage = (int)(1500 * player.GetDamage(DamageClass.Generic).Multiplicative * (player.GetDamage(DamageClass.Generic).Additive + player.GetTotalDamage<SummonDamageClass>().Additive - 1f) * player.GetDamage(DamageClass.Summon).Multiplicative);
+					int damage = (int)(300 * player.GetDamage(DamageClass.Generic).Multiplicative * (player.GetDamage(DamageClass.Generic).Additive + player.GetTotalDamage<SummonDamageClass>().Additive - 1f) * player.GetDamage(DamageClass.Summon).Multiplicative);
 					float knockback = player.GetKnockback<SummonDamageClass>().ApplyTo(10f);
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, -1); // -1 for bottom gust
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 1); // 1 for top gust
@@ -147,16 +143,6 @@ namespace joostitemport.Projectiles.Minions
 			Projectile.tileCollide = false;
 			Projectile.ignoreWater = true;
 			Projectile.damage = 1500;
-			// port all these to AI() (they are from the shooter.cs file in joostmod)
-			// inertia = 20f;
-			// chaseAccel = 40f;
-			// chaseDist = 40f;
-			// shoot = mod.ProjectileType("EnkiduWindFriendly");
-			// shootSpeed = 20f;
-			// shootCool = 90f;
-			// shootNum = 3;
-			// shootSpread = 45f;
-            // predict = true;
 		}
         public override bool MinionContactDamage()
         {
