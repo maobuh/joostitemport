@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace joostitemport.Projectiles.Minions
 {
@@ -10,6 +11,7 @@ namespace joostitemport.Projectiles.Minions
 	{
 		const float overlapVelocity = 0.04f;
 		const int frameSpeed = 5;
+		int shootCooldown;
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Enkidu");
@@ -63,7 +65,7 @@ namespace joostitemport.Projectiles.Minions
 				}
 			}
 			// find target
-			float distanceFromTarget = 700f;
+			float distanceFromTarget = 1080f;
 			Vector2 targetCenter = Projectile.position;
 			bool foundTarget = false;
 			// This code is required if your minion weapon has the targeting feature
@@ -97,10 +99,24 @@ namespace joostitemport.Projectiles.Minions
 					}
 				}
 			}
+			if (foundTarget) {
+				shootCooldown++;
+				if (shootCooldown > 30) {
+					// projectile will be in a random position within 4 tiles left or right of the player and 4 tiles up from the player
+					Vector2 projPos = new(Projectile.Center.X + ((Main.rand.NextFloat() - 0.5f) * 128), Projectile.Center.Y - (Main.rand.NextFloat() * 64));
+					// original damage and knockback calculation ported to 1.4 i think i think i dont know
+					int damage = (int)(1500 * player.GetDamage(DamageClass.Generic).Multiplicative * (player.GetDamage(DamageClass.Generic).Additive + player.GetTotalDamage<SummonDamageClass>().Additive - 1f) * player.GetDamage(DamageClass.Summon).Multiplicative);
+					float knockback = player.GetKnockback<SummonDamageClass>().ApplyTo(10f);
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 0); // 0 for bottom gust
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 1); // 1 for top gust
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 2); // 2 for middle gust
+					shootCooldown = 0;
+				}
+			}
 			// movement
 			// divided by 16 because it is one tile
 			// speed and intertia based on how many tiles away the minion is
-			float speed = distanceToIdlePosition / 16;
+			float speed = distanceToIdlePosition / 8;
 			float inertia = 5f * distanceToIdlePosition / 16;
 			// only move toward player if its far away
 			if (distanceToIdlePosition > 20f) {
@@ -130,6 +146,7 @@ namespace joostitemport.Projectiles.Minions
 			Projectile.timeLeft = 2;
 			Projectile.tileCollide = false;
 			Projectile.ignoreWater = true;
+			Projectile.damage = 1500;
 			// port all these to AI() (they are from the shooter.cs file in joostmod)
 			// inertia = 20f;
 			// chaseAccel = 40f;
