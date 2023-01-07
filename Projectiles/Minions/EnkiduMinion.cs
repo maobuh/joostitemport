@@ -107,9 +107,9 @@ namespace joostitemport.Projectiles.Minions
 					// original damage and knockback calculation ported to 1.4 i think i think i dont know
 					int damage = (int)(1500 * player.GetDamage(DamageClass.Generic).Multiplicative * (player.GetDamage(DamageClass.Generic).Additive + player.GetTotalDamage<SummonDamageClass>().Additive - 1f) * player.GetDamage(DamageClass.Summon).Multiplicative);
 					float knockback = player.GetKnockback<SummonDamageClass>().ApplyTo(10f);
-					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 0); // 0 for bottom gust
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, -1); // -1 for bottom gust
 					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 1); // 1 for top gust
-					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 2); // 2 for middle gust
+					Projectile.NewProjectile(Projectile.GetSource_FromAI(), projPos, Vector2.Zero, ModContent.ProjectileType<EnkiduWindFriendly>(), damage, knockback, player.whoAmI, 0); // 0 for middle gust
 					shootCooldown = 0;
 				}
 			}

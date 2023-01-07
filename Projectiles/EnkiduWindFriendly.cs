@@ -3,7 +3,6 @@ using System;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
 
 namespace joostitemport.Projectiles
 {
@@ -15,7 +14,7 @@ namespace joostitemport.Projectiles
 		bool foundTarget;
 		double timeToTarget;
 		float distanceFromTarget = 1080f;
-		float distanceTravelled;
+		const int chargeTime = 42;
 		double height;
 		Vector2 targetCenter;
         public override void SetStaticDefaults()
@@ -36,18 +35,6 @@ namespace joostitemport.Projectiles
 			Projectile.DamageType = DamageClass.Summon;
 			Projectile.ai[1] = -1;
 		}
-		public override void SendExtraAI (BinaryWriter writer) {
-			
-		}
-		public override void ReceiveExtraAI (BinaryReader reader) {
-			
-		}
-		public override bool PreAI() {
-			if (Projectile.ai[0] == 2 && foundTarget) {
-					distanceTravelled = distanceFromTarget - Vector2.Distance(targetCenter, Projectile.Center);
-			}
-			return true;
-		}
 		public override void AI()
 		{
 			// increment how long the projectile has been alive for
@@ -61,7 +48,8 @@ namespace joostitemport.Projectiles
 			}
 			// wait for a few frames in place
 			// Projectile.ai[1] counts how many frames the projectile has been alive for
-			if (Projectile.ai[1] < 42) {
+			if (Projectile.ai[1] < chargeTime) {
+
 				if (Projectile.ai[1] % 2 == 0) {
 					Projectile.alpha -= 5;
 				}
@@ -93,11 +81,13 @@ namespace joostitemport.Projectiles
 			// shoot towards them
 			if (foundTarget) { //  && Projectile.ai[1] < 42
 				// Projectile.ai[0] determines if this specific projectile is the straight line one or the curved ones
-				if (Projectile.ai[0] != 2) {
-					double currentAngle = Math.Atan(Projectile.DirectionTo(targetCenter).Y / Projectile.DirectionTo(targetCenter).X) + spread - (2 * spread * ((Projectile.ai[1] - 42) / timeToTarget));
-					Vector2 velocityDirection = new((float)Math.Cos(currentAngle), (float)Math.Sin(currentAngle));
-					double magnitude = height * Math.PI / distanceFromTarget * Math.Cos(Math.PI / distanceFromTarget * distanceTravelled);
-					Projectile.velocity = Vector2.Multiply(velocityDirection, (float)magnitude);
+				if (Projectile.ai[0] != 0) {
+					// find unit vector perpendicular to DirectionTo
+					Vector2 perpendicularVelocity = new(Projectile.DirectionTo(targetCenter).X, -Projectile.DirectionTo(targetCenter).X);
+					// multiply it by cos() * height * Projectile.ai[0]
+					perpendicularVelocity = perpendicularVelocity * (float)Math.Cos(distanceTravelled / distanceFromTarget) * (float)height * Projectile.ai[0];
+					// add it to original velocity
+
 				}
 			}
 			// reached target location - starts going in a straight line now
