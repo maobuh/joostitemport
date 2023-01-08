@@ -1,5 +1,7 @@
 joost item ports.
-porting my favorite items from joostmod to 1.4 because i dont know if the guy who made joost is ever going to do anything
+porting my favorite items from joostmod to 1.4 
+WE KNOW JOOST IS PORTING THE MOD NOW
+we wanna play with some joost items now so we will keep adding stuff to this until joost posts the whole thing
 crafting recipes are changed cause idk if i will be bothered to add bosses
 Has not been tested extensively on multiplayer, so tell us about bugs (which we may or may not fix) on the steam page :))
 
