@@ -1,7 +1,8 @@
 ﻿# joostitemport
 joost item ports.
 
-porting my favorite items from joostmod to 1.4 because i dont know if the guy who made joost is ever going to do anything
+porting my favorite items from joostmod to 1.4 
+WE KNOW THAT JOOST IS PORTING THE MOD NOW
 
 Has not been tested extensively on multiplayer, so tell us about bugs (which we may or may not fix) on the steam page :))
 
