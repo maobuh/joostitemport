@@ -1,30 +1,30 @@
-// using Terraria.ID;
-// using Terraria.ModLoader;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-// namespace JoostMod.Projectiles
-// {
-// 	public class BitterEndFriendly2 : ModProjectile
-// 	{
-//         public override void SetStaticDefaults()
-// 		{
-// 			DisplayName.SetDefault("Bitter End");
-// 		}
-// 		public override void SetDefaults()
-// 		{
-// 			projectile.width = 32;
-// 			projectile.height = 32;
-// 			projectile.aiStyle = 1;
-// 			projectile.friendly = true;
-// 			projectile.magic = true;
-// 			projectile.penetrate = 1;
-// 			projectile.timeLeft = 400;
-// 			projectile.alpha = 150;
-// 			projectile.extraUpdates = 1;
-// 			aiType = ProjectileID.Bullet;
-//         }
-//         public override void AI()
-//         {
-//             projectile.rotation = projectile.timeLeft * projectile.velocity.Length() * 0.0174f;
-//         }
-//     }
-// }
+namespace joostitemport.Projectiles
+{
+	public class BitterEndFriendly2 : ModProjectile
+	{
+        public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Bitter End");
+		}
+		public override void SetDefaults()
+		{
+			Projectile.width = 32;
+			Projectile.height = 32;
+			Projectile.aiStyle = 1;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Magic;
+			Projectile.penetrate = 1;
+			Projectile.timeLeft = 400;
+			Projectile.alpha = 150;
+			Projectile.extraUpdates = 1;
+			Projectile.aiStyle = ProjectileID.Bullet;
+        }
+        public override void AI()
+        {
+            Projectile.rotation = Projectile.timeLeft * Projectile.velocity.Length() * 0.0174f;
+        }
+    }
+}

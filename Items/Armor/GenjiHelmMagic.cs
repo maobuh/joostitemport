@@ -42,7 +42,9 @@ namespace joostitemport.Items.Armor
         {
             player.setBonus = "Press the Armor Ability Hotkey to cast Bitter End\n" +
                 "This consumes all of your mana and cant be used while you have mana sickness";
-            // player.GetModPlayer<JoostPlayer>().GMagic = true;
+            if (joostitemport.ArmorAbilityHotKey.JustPressed) {
+                // player.GetModPlayer<JoostPlayer>().gMagic = true;
+            }
         }
         public override void ArmorSetShadows(Player player)
         {

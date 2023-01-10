@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 
 namespace joostitemport.Projectiles.Minions
 {
@@ -112,8 +111,8 @@ namespace joostitemport.Projectiles.Minions
 			// movement
 			// divided by 16 because it is one tile
 			// speed and intertia based on how many tiles away the minion is
-			float speed = distanceToIdlePosition / 8;
-			float inertia = 5f * distanceToIdlePosition / 16;
+			float speed = distanceToIdlePosition / 32;
+            float inertia = (float) distanceToIdlePosition / 16;
 			// only move toward player if its far away
 			if (distanceToIdlePosition > 20f) {
 				vectorToIdlePosition.Normalize();

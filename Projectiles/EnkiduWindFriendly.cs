@@ -15,6 +15,8 @@ namespace joostitemport.Projectiles
 		double timeToTarget;
 		float distanceFromTarget = 1080f;
 		const int chargeTime = 90;
+		const int middle = 0;
+		const int finalAlpha = 100;
 		Vector2 targetCenter;
 		Vector2 originalVelocity;
 		Vector2 directionToTarget;
@@ -51,7 +53,7 @@ namespace joostitemport.Projectiles
 			// Projectile.ai[1] counts how many frames the projectile has been alive for
 			if (Projectile.ai[1] < chargeTime) {
 				if (Projectile.ai[1] % 2 == 0) {
-					Projectile.alpha -= 5;
+					Projectile.alpha -= (255 - finalAlpha) / chargeTime;
 				}
 				return;
 			}
@@ -79,9 +81,9 @@ namespace joostitemport.Projectiles
 				}
 			}
 			// shoot towards them
-			if (foundTarget && Projectile.ai[1] - chargeTime < timeToTarget) { //  && Projectile.ai[1] < 42
+			if (foundTarget && Projectile.ai[1] - chargeTime < timeToTarget) {
 				// Projectile.ai[0] determines if this specific projectile is the straight line one or the curved ones
-				if (Projectile.ai[0] != 0) {
+				if (Projectile.ai[0] != middle) {
 					// find unit vector perpendicular to the direction from the projectile to the target npc
 					Vector2 perpendicularVelocity = new(-directionToTarget.Y, directionToTarget.X);
 					perpendicularVelocity.Normalize();
