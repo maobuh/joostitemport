@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Body)]
     public class GenjiChestSummon : ModItem
     {
         public override void SetStaticDefaults()

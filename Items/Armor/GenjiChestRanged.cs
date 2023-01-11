@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Body)]
     public class GenjiChestRanged : ModItem
     {
         public override void SetStaticDefaults()

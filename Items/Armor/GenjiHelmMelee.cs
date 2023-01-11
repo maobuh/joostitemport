@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     public class GenjiHelmMelee : ModItem
     {
         public override void SetStaticDefaults()

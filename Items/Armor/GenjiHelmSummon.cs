@@ -7,6 +7,7 @@ using joostitemport.Buffs;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     public class GenjiHelmSummon : ModItem
     {
         public override void SetStaticDefaults()

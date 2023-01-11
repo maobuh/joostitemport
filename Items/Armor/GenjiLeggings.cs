@@ -4,6 +4,7 @@ using Terraria.ID;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Legs)]
     class GenjiLeggings : ModItem
     {
         public override void SetStaticDefaults()

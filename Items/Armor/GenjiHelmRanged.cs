@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     public class GenjiHelmRanged : ModItem
     {
         int armorBuffTimer = 120;

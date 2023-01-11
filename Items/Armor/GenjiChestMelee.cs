@@ -6,6 +6,7 @@ using Terraria.ID;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Body)]
     public class GenjiChestMelee : ModItem
     {
         public override void SetStaticDefaults()
