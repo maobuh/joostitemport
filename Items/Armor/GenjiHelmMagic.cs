@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     class GenjiHelmMagic : ModItem
     {
         public override void SetStaticDefaults()
@@ -15,8 +16,6 @@ namespace joostitemport.Items.Armor
         }
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.headSlot = 1;
             Item.width = 26;
             Item.height = 24;
             Item.value = 10000000;
@@ -42,7 +41,9 @@ namespace joostitemport.Items.Armor
         {
             player.setBonus = "Press the Armor Ability Hotkey to cast Bitter End\n" +
                 "This consumes all of your mana and cant be used while you have mana sickness";
-            // player.GetModPlayer<JoostPlayer>().GMagic = true;
+            if (joostitemport.ArmorAbilityHotKey.JustPressed) {
+                player.GetModPlayer<JoostPlayer>().gMagic = true;
+            }
         }
         public override void ArmorSetShadows(Player player)
         {
@@ -57,7 +58,6 @@ namespace joostitemport.Items.Armor
         {
             player.GetDamage<MagicDamageClass>() += 0.65f;
             player.manaCost *= 0.65f;
-
         }
         public override void AddRecipes()
         {

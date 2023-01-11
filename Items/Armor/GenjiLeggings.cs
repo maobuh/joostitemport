@@ -4,6 +4,7 @@ using Terraria.ID;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Legs)]
     class GenjiLeggings : ModItem
     {
         public override void SetStaticDefaults()
@@ -13,8 +14,6 @@ namespace joostitemport.Items.Armor
         }
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.legSlot = 1;
 			Item.width = 18;
 			Item.height = 18;
 			Item.value = 10000000;
@@ -28,5 +27,11 @@ namespace joostitemport.Items.Armor
 			player.accRunSpeed *= 3;
 			player.maxRunSpeed *= 3;
 		}
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            // recipe.AddIngredient();
+            recipe.Register();
+        }
     }
 }

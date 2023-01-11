@@ -46,7 +46,6 @@ namespace joostitemport.Items
 			recipe.AddTile(TileID.Bookcases);
 			recipe.Register();
 		}
-
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// 15 degrees but in radians for the spread of the needles
@@ -64,7 +63,6 @@ namespace joostitemport.Items
 			}
 			return false;
 		}
-
 		public override bool MagicPrefix()
 		{
 			return true;

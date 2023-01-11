@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     public class GenjiHelmMelee : ModItem
     {
         public override void SetStaticDefaults()
@@ -16,8 +17,6 @@ namespace joostitemport.Items.Armor
         }
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.headSlot = 1;
             Item.width = 26;
             Item.height = 26;
             Item.value = 10000000;
@@ -42,7 +41,7 @@ namespace joostitemport.Items.Armor
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = "Swing the Masamune when you hit an enemy with a melee weapon";
-            // player.GetModPlayer<JoostPlayer>().gMelee = true;
+            player.GetModPlayer<JoostPlayer>().gMelee = true;
         }
         public override void ArmorSetShadows(Player player)
         {
@@ -60,14 +59,6 @@ namespace joostitemport.Items.Armor
             Recipe recipe = CreateRecipe();
             // recipe.AddIngredient();
             recipe.Register();
-        }
-
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
-        {
-            // if ()
-            {
-
-            }
         }
     }
 }

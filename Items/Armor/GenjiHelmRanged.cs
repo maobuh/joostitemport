@@ -5,10 +5,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     public class GenjiHelmRanged : ModItem
     {
         int armorBuffTimer = 120;
-        bool gRanged;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Crimson Genji Helm");
@@ -16,8 +16,6 @@ namespace joostitemport.Items.Armor
         }
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.headSlot = 1;
             Item.width = 28;
             Item.height = 26;
             Item.value = 10000000;
@@ -43,22 +41,19 @@ namespace joostitemport.Items.Armor
         {
             player.setBonus = "Press the Armor Ability key to sacrifice all your defense for increased ranged ability for 2 seconds with no cooldown";
             if (joostitemport.ArmorAbilityHotKey.JustPressed && armorBuffTimer == 120) {
-                gRanged = true;
+                player.GetModPlayer<JoostPlayer>().gRanged = true;
             }
         }
         public override void UpdateEquip(Player player)
         {
             player.GetDamage<RangedDamageClass>() += 0.50f;
-            // player.GetModPlayer<JoostModPlayer>().ammoConsume = 0; // player shouldnt use ammo when they shoot idk how tho fck
             if (armorBuffTimer <= 0)
             {
-                gRanged = false;
+                player.GetModPlayer<JoostPlayer>().gRanged = false;
                 armorBuffTimer = 120;
             }
-            else if (gRanged)
+            else if (player.GetModPlayer<JoostPlayer>().gRanged)
             {
-                player.GetDamage<RangedDamageClass>() *= 1 + (player.statDefense * 0.005f);
-                player.statDefense = 0;
                 armorBuffTimer--;
             }
         }

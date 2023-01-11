@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using joostitemport.Buffs;
 
 namespace joostitemport.Items.Armor
 {
+    [AutoloadEquip(EquipType.Head)]
     public class GenjiHelmSummon : ModItem
     {
         public override void SetStaticDefaults()
@@ -16,8 +18,6 @@ namespace joostitemport.Items.Armor
 
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.headSlot = 1;
             Item.width = 26;
             Item.height = 24;
             Item.value = 10000000;
@@ -42,8 +42,8 @@ namespace joostitemport.Items.Armor
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = "Enkidu will fight for you";
-            // player.AddBuff(mod.BuffType("EnkiduMinion"), 2);
-            // player.GetModPlayer<JoostPlayer>().EnkiduMinion = true;
+            player.GetModPlayer<JoostPlayer>().gSummon = true;
+            player.AddBuff(ModContent.BuffType<EnkiduMinion>(), 2);
         }
         public override void UpdateEquip(Player player)
         {
