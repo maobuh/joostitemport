@@ -17,6 +17,7 @@ Items ported:
     Cactus Worm Hook
     Doom Cannon
     Some Fishing Shotguns
+    Genji Armor
 
 Changes from 1.3:
 
@@ -50,6 +51,11 @@ Doom Cannon
 Mechanical Fishing Shotgun
 
     less damage (16 per bobber)
+
+Genji Armor
+
+    bitter end has gravity now
+    enkidu minions projectiles hit more often
 
 Crafting Recipes: just use recipe browser mod :/
 

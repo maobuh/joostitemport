@@ -42,7 +42,7 @@ namespace joostitemport.Items.Armor
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            // recipe.AddIngredient();
+            recipe.AddIngredient(ItemID.LunarBar, 20);
             recipe.Register();
         }
     }
