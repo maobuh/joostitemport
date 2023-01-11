@@ -14,12 +14,9 @@ namespace joostitemport.Projectiles
     {
         private bool isHooked;
         private bool canGrab = true;
-        private bool jump = false;
         private bool retreat;
-        private float pullTime = 0;
-        private readonly float pullSpeed = 40f;
+        private readonly float pullSpeed = 20f;
         private readonly float retreatSpeed = 40;
-        private Vector2 vel = Vector2.Zero;
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.GemHookAmethyst);
@@ -62,10 +59,6 @@ namespace joostitemport.Projectiles
 
         public override bool PreAI()
         {
-            if (vel == Vector2.Zero)
-            {
-                vel = Projectile.velocity * 1f;
-            }
             Player player = Main.player[Projectile.owner];
             if (player.dead || (Vector2.Distance(player.Center, Projectile.Center) > GrappleRange() && !isHooked))
             {
@@ -73,16 +66,12 @@ namespace joostitemport.Projectiles
                 isHooked = false;
                 canGrab = false;
             }
-            if (Vector2.Distance(player.Center, Projectile.Center) > GrappleRange() * 3)
-            {
-                Projectile.Kill();
-            }
             Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
-            Vector2 vector6 = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f));
-            float num69 = mountedCenter.X - vector6.X;
-            float num70 = mountedCenter.Y - vector6.Y;
-            Projectile.rotation = (float)Math.Atan2((double)num70, (double)num69) - 1.57f;
-            Projectile.direction = (Projectile.rotation < 0 && Projectile.rotation > -3.14f) ? -1 : 1;
+            Vector2 directionVector = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f));
+            float directionX = mountedCenter.X - directionVector.X;
+            float directionY = mountedCenter.Y - directionVector.Y;
+            Projectile.rotation = (float)Math.Atan2((double)directionY, (double)directionX) - (float)(Math.PI / 2);
+            Projectile.direction = (Projectile.rotation < 0 && Projectile.rotation > -1 * Math.PI) ? -1 : 1;
             Projectile.spriteDirection = Projectile.direction;
             Projectile.soundDelay--;
             if (retreat)
@@ -94,6 +83,28 @@ namespace joostitemport.Projectiles
                     Projectile.Kill();
                 }
             }
+            int startPosX = (int)(Projectile.position.X / 16f) - 1;                         // originally named num124
+            int endPosX = (int)((Projectile.position.X + Projectile.width) / 16f) + 2;      // originally named num125
+            int startPosY = (int)(Projectile.position.Y / 16f) - 1;                         // originally named num126
+            int endPosY = (int)((Projectile.position.Y + Projectile.height) / 16f) + 2;     // originally named num127
+            if (startPosX < 0)
+            {
+                startPosX = 0;
+            }
+            if (endPosX > Main.maxTilesX)
+            {
+                endPosX = Main.maxTilesX;
+            }
+            if (startPosY < 0)
+            {
+                startPosY = 0;
+            }
+            if (endPosY > Main.maxTilesY)
+            {
+                endPosY = Main.maxTilesY;
+            }
+            bool flag3 = true;  // checks if the player has reached the hook
+            // i think this is player go in
             if (isHooked)
             {
                 player.rocketTime = player.rocketTimeMax;
@@ -101,43 +112,33 @@ namespace joostitemport.Projectiles
                 player.rocketFrame = false;
                 player.canRocket = false;
                 player.rocketRelease = false;
-                player.fallStart = (int)(player.Center.Y / 16f);
-                player.sandStorm = false;
+                player.fallStart = (int)(player.Center.Y / 16f);    // so the player doesnt take fall damage 
                 player.wingTime = 0;
                 Projectile.ai[0] = 2f;
                 Projectile.velocity = default;
                 Projectile.timeLeft = 2;
-                int num124 = (int)(Projectile.position.X / 16f) - 1;
-                int num125 = (int)((Projectile.position.X + (float)Projectile.width) / 16f) + 2;
-                int num126 = (int)(Projectile.position.Y / 16f) - 1;
-                int num127 = (int)((Projectile.position.Y + (float)Projectile.height) / 16f) + 2;
-                if (num124 < 0)
+
+                // prevent player from needing to use a double jump item to get out of hook
+                // not sure if theres a better way to do this
+                player.canJumpAgain_Blizzard = false;
+                player.canJumpAgain_Cloud = false;
+                player.canJumpAgain_Fart = false;
+                player.canJumpAgain_Sail = false;
+                player.canJumpAgain_Sandstorm = false;
+
+                for (int iX = startPosX; iX < endPosX; iX++)
                 {
-                    num124 = 0;
-                }
-                if (num125 > Main.maxTilesX)
-                {
-                    num125 = Main.maxTilesX;
-                }
-                if (num126 < 0)
-                {
-                    num126 = 0;
-                }
-                if (num127 > Main.maxTilesY)
-                {
-                    num127 = Main.maxTilesY;
-                }
-                bool flag3 = true;
-                for (int num128 = num124; num128 < num125; num128++)
-                {
-                    for (int num129 = num126; num129 < num127; num129++)
+                    for (int iY = startPosY; iY < endPosY; iY++)
                     {
-                        Vector2 vector9;
-                        vector9.X = (float)(num128 * 16);
-                        vector9.Y = (float)(num129 * 16);
-                        if (Projectile.position.X + (float)(Projectile.width / 2) > vector9.X && Projectile.position.X + (float)(Projectile.width / 2) < vector9.X + 16f
-                            && Projectile.position.Y + (float)(Projectile.height / 2) > vector9.Y && Projectile.position.Y + (float)(Projectile.height / 2) < vector9.Y + 16f
-                            && Main.tile[num128, num129].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num128, num129].TileType] || Main.tile[num128, num129].TileType == 314))
+                        Vector2 currPos;    // originally vector9
+                        currPos.X = iX * 16;
+                        currPos.Y = iY * 16;
+                        float projCentreX = Projectile.position.X + (Projectile.width / 2);
+                        float projCentreY = Projectile.position.Y + (Projectile.height / 2);
+                        if (projCentreX > currPos.X && projCentreX < currPos.X + 16f
+                            && projCentreY > currPos.Y && projCentreY < currPos.Y + 16f
+                            && Main.tile[iX, iY].HasUnactuatedTile && (Main.tileSolid[Main.tile[iX, iY].TileType]
+                            || Main.tile[iX, iY].TileType == TileID.MinecartTrack))
                         {
                             flag3 = false;
                         }
@@ -149,16 +150,6 @@ namespace joostitemport.Projectiles
                 }
                 retreat = false;
                 player.velocity = player.DirectionTo(Projectile.Center) * pullSpeed;
-                if (Math.Abs(player.Center.X - Projectile.Center.X) < 8)
-                {
-                    player.velocity.X = 0;
-                    player.position.X = Projectile.Center.X - (player.width / 2);
-                }
-                if (Math.Abs(player.Center.Y - Projectile.Center.Y) < 8)
-                {
-                    player.velocity.Y = 0;
-                    player.position.Y = Projectile.Center.Y - (player.height / 2);
-                }
                 if (player.itemAnimation == 0)
                 {
                     if (player.velocity.X > 0)
@@ -170,21 +161,10 @@ namespace joostitemport.Projectiles
                         player.direction = -1;
                     }
                 }
-                if (Vector2.Distance(player.Center, Projectile.Center) > 30)
+                if (Vector2.Distance(player.Center, Projectile.Center) > 16)
                 {
-                    if (Collision.SolidCollision(player.position, player.width, player.height))
-                    {
-                        pullTime -= 0.5f;
-                    }
-                    else
-                    {
-                        pullTime--;
-                    }
-                    if (pullTime <= 0)
-                    {
-                        pullTime = (int)(Vector2.Distance(player.Center, Projectile.Center) / pullSpeed);
-                    }
-                    player.position = (Projectile.Center + (Projectile.DirectionTo(player.Center) * pullTime * pullSpeed)) - (player.Size / 2);
+                    // this is the line that changes the path of the pull
+                    player.position += player.velocity;
                     if (Projectile.soundDelay <= 0 && Collision.SolidCollision(player.position, player.width, player.height))
                     {
                         Projectile.soundDelay = 20;
@@ -193,66 +173,46 @@ namespace joostitemport.Projectiles
                 }
                 else
                 {
-                    pullTime = 0;
+                    player.position.X = Projectile.Center.X - (player.width / 2);
+                    player.position.Y = Projectile.Center.Y - (player.height / 2);
+                    player.velocity = Vector2.Zero;
                 }
                 if (!player.releaseJump) {
-                    jump = true;
-                }
-                if (jump) {
                     isHooked = false;
+
+                    // reset players double jumps
+                    // player.RefreshDoubleJumps() is private :(
+                    player.canJumpAgain_Blizzard = true;
+                    player.canJumpAgain_Cloud = true;
+                    player.canJumpAgain_Fart = true;
+                    player.canJumpAgain_Sail = true;
+                    player.canJumpAgain_Sandstorm = true;
                 }
             }
+            // i think this is hook go out
             else
             {
                 Projectile.ai[0] = 0f;
-                int num111 = (int)(Projectile.position.X / 16f) - 1;
-                int num112 = (int)((Projectile.position.X + (float)Projectile.width) / 16f) + 2;
-                int num113 = (int)(Projectile.position.Y / 16f) - 1;
-                int num114 = (int)((Projectile.position.Y + (float)Projectile.height) / 16f) + 2;
-                if (num111 < 0)
+                for (int iX = startPosX; iX < endPosX; iX++)
                 {
-                    num111 = 0;
-                }
-                if (num112 > Main.maxTilesX)
-                {
-                    num112 = Main.maxTilesX;
-                }
-                if (num113 < 0)
-                {
-                    num113 = 0;
-                }
-                if (num114 > Main.maxTilesY)
-                {
-                    num114 = Main.maxTilesY;
-                }
-                if (!retreat)
-                {
-                    Projectile.velocity = vel * 3;
-                }
-                for (int num115 = num111; num115 < num112; num115++)
-                {
-                    int num116 = num113;
-                    while (num116 < num114)
+                    int iY = startPosY;
+                    while (iY < endPosY)
                     {
-                        Vector2 vector8;
-                        vector8.X = (float)(num115 * 16);
-                        vector8.Y = (float)(num116 * 16);
-                        if (Projectile.position.X + (float)Projectile.width > vector8.X && Projectile.position.X < vector8.X + 16f
-                            && Projectile.position.Y + (float)Projectile.height > vector8.Y && Projectile.position.Y < vector8.Y + 16f
-                            && Main.tile[num115, num116].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num115, num116].TileType] || Main.tile[num115, num116].TileType == 314))
+                        Vector2 currPos;        // originally vector8
+                        currPos.X = iX * 16;
+                        currPos.Y = iY * 16;
+                        if (Projectile.position.X + Projectile.width > currPos.X && Projectile.position.X < currPos.X + 16f
+                            && Projectile.position.Y + Projectile.height > currPos.Y && Projectile.position.Y < currPos.Y + 16f
+                            && Main.tile[iX, iY].HasUnactuatedTile && (Main.tileSolid[Main.tile[iX, iY].TileType] || Main.tile[iX, iY].TileType == TileID.MinecartTrack))
                         {
-                            if (!retreat)
-                            {
-                                Projectile.velocity = vel;
-                            }
                             if (canGrab && !player.controlHook)
                             {
                                 Projectile.velocity.X = 0f;
                                 Projectile.velocity.Y = 0f;
                                 SoundEngine.PlaySound(SoundID.Item1, Projectile.position);
                                 isHooked = true;
-                                Projectile.position.X = (float)((num115 * 16) + 8 - (Projectile.width / 2));
-                                Projectile.position.Y = (float)((num116 * 16) + 8 - (Projectile.height / 2));
+                                Projectile.position.X = (iX * 16) + 8 - (Projectile.width / 2);
+                                Projectile.position.Y = (iY * 16) + 8 - (Projectile.height / 2);
                                 Projectile.netUpdate = true;
                             }
                             else
@@ -267,7 +227,7 @@ namespace joostitemport.Projectiles
                         }
                         else
                         {
-                            num116++;
+                            iY++;
                         }
                     }
                     if (isHooked)
@@ -282,35 +242,30 @@ namespace joostitemport.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
-            Vector2 vector14 = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f));
-            float num84 = mountedCenter.X - vector14.X;
-            float num85 = mountedCenter.Y - vector14.Y;
-            float rotation13 = (float)Math.Atan2((double)num85, (double)num84) - 1.57f;
-            bool flag11 = true;
-            while (flag11)
+            Vector2 projCentre = new(Projectile.position.X + (float)(Projectile.width * 0.5f), Projectile.position.Y + (float)(Projectile.height * 0.5f)); // originally vector14
+            float distX = mountedCenter.X - projCentre.X;   // originally num84
+            float distY = mountedCenter.Y - projCentre.Y;   // originally num85
+            float rotation13 = (float)Math.Atan2((double)distY, (double)distX) - 1.57f;
+            while (true)
             {
-                float num86 = (float)Math.Sqrt((double)((num84 * num84) + (num85 * num85)));
-                if (num86 < 30f)
+                float distance = (float)Math.Sqrt((double)((distX * distX) + (distY * distY))); // originally num86
+                if (distance < 30f || float.IsNaN(distance))
                 {
-                    flag11 = false;
-                }
-                else if (float.IsNaN(num86))
-                {
-                    flag11 = false;
+                    break;
                 }
                 else
                 {
-                    num86 = 24f / num86;
-                    num84 *= num86;
-                    num85 *= num86;
-                    vector14.X += num84;
-                    vector14.Y += num85;
-                    num84 = mountedCenter.X - vector14.X;
-                    num85 = mountedCenter.Y - vector14.Y;
-                    Color color15 = Lighting.GetColor((int)vector14.X / 16, (int)(vector14.Y / 16f));
+                    distance = 24f / distance;
+                    distX *= distance;
+                    distY *= distance;
+                    projCentre.X += distX;
+                    projCentre.Y += distY;
+                    distX = mountedCenter.X - projCentre.X;
+                    distY = mountedCenter.Y - projCentre.Y;
+                    Color color15 = Lighting.GetColor((int)projCentre.X / 16, (int)(projCentre.Y / 16f));
                     const SpriteEffects effects = SpriteEffects.None;
                     Main.spriteBatch.Draw((Texture2D) ModContent.Request<Texture2D>("joostitemport/Projectiles/CactusHookChain", (AssetRequestMode)2),
-                                            new Vector2(vector14.X - Main.screenPosition.X, vector14.Y - Main.screenPosition.Y),
+                                            new Vector2(projCentre.X - Main.screenPosition.X, projCentre.Y - Main.screenPosition.Y),
                                             new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, 24, 16)),
                                             color15, rotation13, new Vector2(12, 24),
                                             1f, effects, 0f);
