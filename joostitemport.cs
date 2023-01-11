@@ -9,5 +9,7 @@ namespace joostitemport
 		{
 			ArmorAbilityHotKey = KeybindLoader.RegisterKeybind(ModContent.GetInstance<joostitemport>(), "ArmorAbilityHotKey", "Z");
 		}
+		public override void Unload() {
+		}
 	}
 }

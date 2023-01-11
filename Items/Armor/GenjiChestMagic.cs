@@ -11,13 +11,12 @@ namespace joostitemport.Items.Armor
     {
         public override void SetStaticDefaults()
         {
+            base.SetStaticDefaults();
             DisplayName.SetDefault("Azure Genji Armor");
             Tooltip.SetDefault("Max Mana increased by 200\nMax Life increased by 175");
         }
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.bodySlot = 1;
             Item.width = 44;
             Item.height = 50;
             Item.value = 10000000;

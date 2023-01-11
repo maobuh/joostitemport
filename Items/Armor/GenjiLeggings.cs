@@ -14,8 +14,6 @@ namespace joostitemport.Items.Armor
         }
         public override void SetDefaults()
         {
-            Item.wornArmor = true;
-            Item.legSlot = 1;
 			Item.width = 18;
 			Item.height = 18;
 			Item.value = 10000000;
