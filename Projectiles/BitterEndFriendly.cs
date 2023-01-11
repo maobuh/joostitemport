@@ -26,7 +26,6 @@ namespace joostitemport.Projectiles
             Projectile.tileCollide = false;
             Projectile.light = 0.95f;
             Projectile.ignoreWater = true;
-            Projectile.aiStyle = ProjectileID.Bullet;
         }
         public override void AI()
         {
@@ -48,12 +47,12 @@ namespace joostitemport.Projectiles
         }
         public override void Kill(int timeLeft)
         {
-            int shootNum = 36;
-            float shootSpread = 360f;
-            float spread = shootSpread * 0.0174f;
-            float baseSpeed = (float)Math.Sqrt(7f * 7f + 7f * 7f);
-            double startAngle = Math.Atan2(7f, 7f) - spread / shootNum;
-            double deltaAngle = spread / shootNum;
+            const int shootNum = 36;
+            const float shootSpread = 360f;
+            const float spread = shootSpread * 0.0174f;
+            float baseSpeed = (float)Math.Sqrt((7f * 7f) + (7f * 7f));
+            double startAngle = Math.Atan2(7f, 7f) - (spread / shootNum);
+            const double deltaAngle = spread / shootNum;
             double offsetAngle;
             int i;
             for (i = 0; i < shootNum; i++)

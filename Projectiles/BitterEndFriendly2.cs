@@ -20,7 +20,6 @@ namespace joostitemport.Projectiles
 			Projectile.timeLeft = 400;
 			Projectile.alpha = 150;
 			Projectile.extraUpdates = 1;
-			Projectile.aiStyle = ProjectileID.Bullet;
         }
         public override void AI()
         {

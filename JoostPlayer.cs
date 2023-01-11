@@ -1,9 +1,11 @@
 using joostitemport.Items.Armor;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using joostitemport.Projectiles;
 using joostitemport.Projectiles.Minions;
+using Terraria.GameInput;
 
 namespace joostitemport
 {
@@ -13,6 +15,7 @@ namespace joostitemport
         public bool gRanged;
         public bool gMelee;
         public bool gSummon;
+        public bool gMagic;
         public int masamuneDelay;
         public override void PostUpdateEquips()
         {
@@ -42,6 +45,15 @@ namespace joostitemport
         {
             useAmmo = Player.armor[0].netID != ModContent.ItemType<GenjiHelmRanged>();
             return useAmmo;
+        }
+        public override void ProcessTriggers(TriggersSet triggersSet)
+        {
+            if (joostitemport.ArmorAbilityHotKey.JustPressed && gMagic && !Player.HasBuff(BuffID.ManaSickness) && Player.ownedProjectileCounts[ModContent.ProjectileType<BitterEndFriendly>()] + Player.ownedProjectileCounts[ModContent.ProjectileType<BitterEndFriendly2>()] <= 0 && Player.statMana >= Player.statManaMax2)
+            {
+                Projectile.NewProjectile(Player.GetSource_ItemUse(Player.armor[0]), Player.Center, Vector2.Zero, ModContent.ProjectileType<BitterEndFriendly>(), (int)Player.GetDamage<MagicDamageClass>().ApplyTo(2000), 20f, Player.whoAmI);
+                Player.manaRegenDelay = 180 * (2 + Player.manaRegenDelayBonus);
+                Player.statMana *= 0;
+            }
         }
     }
 }
