@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using joostitemport.Projectiles;
 using joostitemport.Projectiles.Minions;
 using Terraria.GameInput;
@@ -56,6 +55,8 @@ namespace joostitemport
                 Projectile.NewProjectile(Player.GetSource_ItemUse(Player.armor[0]), Player.Center, Vector2.Zero, ModContent.ProjectileType<BitterEndFriendly>(), (int)Player.GetDamage<MagicDamageClass>().ApplyTo(2000), 20f, Player.whoAmI);
                 Player.manaRegenDelay = 180 * (2 + Player.manaRegenDelayBonus);
                 Player.statMana *= 0;
+            }
+        }
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
             if (lunarRod && Main.rand.Next(4) == 0)
